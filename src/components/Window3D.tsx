@@ -1,0 +1,658 @@
+'use client';
+
+import { useRef, useMemo, Suspense, useState, useEffect, Component, ReactNode } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { 
+  OrbitControls, 
+  Environment, 
+  Float, 
+  MeshTransmissionMaterial,
+  ContactShadows
+} from '@react-three/drei';
+import * as THREE from 'three';
+
+const globalPointer = { x: 0, y: 0 };
+if (typeof window !== 'undefined') {
+  window.addEventListener('pointermove', (e) => {
+    globalPointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    globalPointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+}
+
+function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => void, activeFeature?: number | null }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const baseRotX = useRef(0);
+  const baseRotY = useRef(0);
+  const scrollY = useRef(0);
+  const introTimer = useRef(0);
+  const introDuration = 5.0; // Extended duration for sequential assembly
+  const hasFinishedIntro = useRef(false);
+
+  useEffect(() => {
+    // Scroll listener for parallax
+    const handleScroll = () => {
+      scrollY.current = window.scrollY;
+
+      // Cancel intro if user scrolls
+      if (introTimer.current < introDuration && window.scrollY > 10) {
+        introTimer.current = introDuration; // Fast-forward to end
+        if (!hasFinishedIntro.current && onIntroFinish) {
+          hasFinishedIntro.current = true;
+          onIntroFinish();
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    scrollY.current = window.scrollY;
+
+    // If already scrolled past hero on mount (e.g. F5 while scrolled), skip intro entirely
+    const skipIntro = window.scrollY > 100;
+    if (skipIntro) {
+      introTimer.current = introDuration;
+      if (!hasFinishedIntro.current && onIntroFinish) {
+        hasFinishedIntro.current = true;
+        onIntroFinish();
+      }
+    }
+
+    // Setup sequential assembly data for children meshes
+    if (groupRef.current) {
+      groupRef.current.children.forEach((child, i) => {
+        child.userData.origPos = child.position.clone();
+        
+        // Define sequence:
+        // 0-3: Outer Frame, 4-5: Mullions, 6-9: Glass, 10-11: Handle, 12-13: Bevels
+        let delay = 0;
+        let dur = 1.0;
+        
+        if (i <= 3) { delay = 0.2; dur = 1.0; } // Frame first
+        else if (i <= 5) { delay = 1.2; dur = 0.8; } // Mullions next
+        else if (i <= 9) { delay = 2.0; dur = 0.8; } // Glass panels
+        else if (i <= 11) { delay = 2.8; dur = 0.6; } // Handle last
+        else { delay = 0.2; dur = 1.0; } // Bevels with frame
+
+        child.userData.delay = delay;
+        child.userData.duration = dur;
+
+        child.userData.origRot = child.rotation.clone();
+
+        if (skipIntro) {
+          // If skipping intro, keep pieces at their original positions
+          child.userData.explPos = child.position.clone();
+          child.userData.explRot = child.rotation.clone();
+        } else {
+          // Distribute pieces randomly behind the camera so they fly into view
+          const angle = (i / groupRef.current!.children.length) * Math.PI * 2;
+          child.userData.explPos = new THREE.Vector3(
+            Math.cos(angle) * 10 + (Math.random() - 0.5) * 5,
+            Math.sin(angle) * 10 + (Math.random() - 0.5) * 5,
+            5 + Math.random() * 5 // Start behind the camera (+Z)
+          );
+          child.userData.explRot = new THREE.Euler(
+            Math.random() * Math.PI * 2,
+            Math.random() * Math.PI * 2,
+            Math.random() * Math.PI * 2
+          );
+        }
+      });
+    }
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      // Advance intro timer
+      if (introTimer.current < introDuration) {
+        introTimer.current += delta;
+      }
+      const time = introTimer.current;
+
+      // 1. Base subtle floating rotation (using performance.now() to avoid THREE.Clock deprecation warning)
+      const floatRotY = Math.sin(performance.now() * 0.0005) * 0.05;
+      const floatRotX = Math.cos(performance.now() * 0.0005) * 0.05;
+      
+      let normalRotX = 0;
+      let normalRotY = 0;
+
+      if (activeFeature === null) {
+        // Normal parallax when no feature is active
+        const scrollRotY = (window.scrollY / window.innerHeight) * Math.PI * 0.1;
+        const targetRotY = (globalPointer.x * Math.PI) / 12;
+        const targetRotX = -(globalPointer.y * Math.PI) / 24;
+        
+        normalRotX = THREE.MathUtils.lerp(baseRotX.current, targetRotX + floatRotX, 0.05);
+        normalRotY = THREE.MathUtils.lerp(baseRotY.current, targetRotY + floatRotY + scrollRotY, 0.05);
+      } else {
+        // Dynamic rotations for features
+        let targetRotX = floatRotX;
+        let targetRotY = floatRotY;
+        
+        switch (activeFeature) {
+          case 0: // Weather
+            targetRotY += Math.PI / 8;
+            targetRotX -= Math.PI / 16;
+            break;
+          case 1: // Energy
+            targetRotY -= Math.PI / 6;
+            break;
+          case 2: // Sound
+            targetRotY = 0;
+            break;
+          case 3: // Maintenance
+            targetRotY += Math.PI / 4;
+            targetRotX += Math.PI / 12;
+            break;
+        }
+        
+        normalRotX = THREE.MathUtils.lerp(baseRotX.current, targetRotX, 0.04);
+        normalRotY = THREE.MathUtils.lerp(baseRotY.current, targetRotY, 0.04);
+      }
+
+      baseRotX.current = normalRotX;
+      baseRotY.current = normalRotY;
+
+      if (time < introDuration) {
+        // ==== SEQUENTIAL ASSEMBLY MODE ====
+        
+        // Group animation: Stay large/close for the first 3.5s, then fly back to normal
+        let groupProgress = 0;
+        if (time > 3.5) {
+          groupProgress = Math.min((time - 3.5) / 1.5, 1.0);
+        }
+        const easeOutGroup = 1 - Math.pow(1 - groupProgress, 4);
+
+        // Slow cinematic 360 spin during assembly, then lock to mouse
+        const introSpinY = THREE.MathUtils.lerp(-Math.PI * 2 - Math.PI / 8, 0, easeOutGroup);
+        
+        // Z-position: start at 0.8 (comfortable size, not too huge) and lerp back to 0
+        const zPos = THREE.MathUtils.lerp(0.8, 0, easeOutGroup);
+        groupRef.current.position.z = zPos;
+        
+        groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, normalRotX, delta * 4);
+        groupRef.current.rotation.y = normalRotY + introSpinY;
+
+        // Animate individual pieces assembling
+        groupRef.current.children.forEach((child) => {
+          if (child.userData.origPos) {
+            const delay = child.userData.delay;
+            const dur = child.userData.duration;
+            let pieceProgress = 0;
+            if (time > delay) {
+              pieceProgress = Math.min((time - delay) / dur, 1.0);
+            }
+            // Quartic ease out for pieces
+            const easeOutPiece = 1 - Math.pow(1 - pieceProgress, 4);
+
+            // Position interpolation
+            child.position.lerpVectors(child.userData.explPos, child.userData.origPos, easeOutPiece);
+            
+            // Rotation interpolation
+            const qExpl = new THREE.Quaternion().setFromEuler(child.userData.explRot);
+            const qOrig = new THREE.Quaternion().setFromEuler(child.userData.origRot);
+            child.quaternion.slerpQuaternions(qExpl, qOrig, easeOutPiece);
+          }
+        });
+      } else {
+        // Trigger completion callback once and ensure everything is fully assembled
+        if (!hasFinishedIntro.current) {
+          hasFinishedIntro.current = true;
+          
+          // Force all pieces to their final assembled positions instantly
+          groupRef.current.position.z = 0;
+          groupRef.current.children.forEach((child) => {
+            if (child.userData.origPos) {
+              child.position.copy(child.userData.origPos);
+              child.rotation.copy(child.userData.origRot);
+            }
+          });
+
+          if (onIntroFinish) onIntroFinish();
+        }
+
+        // ==== INTERACTIVE PARALLAX MODE ====
+        
+        // Ensure pieces are snapped perfectly in place after intro
+        if (groupRef.current.children[0]?.userData.origPos && 
+            groupRef.current.children[0].position.distanceTo(groupRef.current.children[0].userData.origPos) > 0.001) {
+          groupRef.current.children.forEach((child) => {
+            child.position.copy(child.userData.origPos);
+            child.rotation.copy(child.userData.origRot);
+          });
+        }
+
+        // Standard smooth interpolation
+        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 0, delta * 4);
+        groupRef.current.rotation.x = normalRotX;
+        groupRef.current.rotation.y = normalRotY;
+      }
+    }
+  });
+
+  // Frame dimensions
+  const frameWidth = 3;
+  const frameHeight = 4;
+  const frameDepth = 0.25;
+  const frameThickness = 0.2;
+  const mullionThickness = 0.12;
+
+  const frameMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color('#f5f5f5'),
+    roughness: 0.3,
+    metalness: 0.05,
+    clearcoat: 0.8,
+    clearcoatRoughness: 0.15,
+    envMapIntensity: 0.6,
+  }), []);
+
+  const handleMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color('#c0c0c0'),
+    roughness: 0.15,
+    metalness: 0.9,
+    envMapIntensity: 1.2,
+  }), []);
+
+  // Glass material - simplified for better compatibility
+  const glassMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color('#d4eaff'),
+    transparent: true,
+    opacity: 0.3,
+    roughness: 0.05,
+    metalness: 0.1,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.05,
+    envMapIntensity: 0.8,
+    side: THREE.DoubleSide,
+    transmission: 0.9,
+    thickness: 0.3,
+    ior: 1.52,
+  }), []);
+
+  // Calculate glass panel positions (2x2 grid)
+  const halfW = frameWidth / 2;
+  const halfH = frameHeight / 2;
+  const panelW = (frameWidth - frameThickness * 2 - mullionThickness) / 2;
+  const panelH = (frameHeight - frameThickness * 2 - mullionThickness) / 2;
+
+  return (
+    <group ref={groupRef}>
+        {/* Outer Frame - Top */}
+        <mesh position={[0, halfH - frameThickness/2, 0]} material={frameMaterial}>
+          <boxGeometry args={[frameWidth, frameThickness, frameDepth]} />
+        </mesh>
+        {/* Outer Frame - Bottom */}
+        <mesh position={[0, -halfH + frameThickness/2, 0]} material={frameMaterial}>
+          <boxGeometry args={[frameWidth, frameThickness, frameDepth]} />
+        </mesh>
+        {/* Outer Frame - Left */}
+        <mesh position={[-halfW + frameThickness/2, 0, 0]} material={frameMaterial}>
+          <boxGeometry args={[frameThickness, frameHeight, frameDepth]} />
+        </mesh>
+        {/* Outer Frame - Right */}
+        <mesh position={[halfW - frameThickness/2, 0, 0]} material={frameMaterial}>
+          <boxGeometry args={[frameThickness, frameHeight, frameDepth]} />
+        </mesh>
+
+        {/* Center Vertical Mullion */}
+        <mesh position={[0, 0, 0]} material={frameMaterial}>
+          <boxGeometry args={[mullionThickness, frameHeight - frameThickness * 2, frameDepth]} />
+        </mesh>
+        {/* Center Horizontal Mullion */}
+        <mesh position={[0, 0, 0]} material={frameMaterial}>
+          <boxGeometry args={[frameWidth - frameThickness * 2, mullionThickness, frameDepth]} />
+        </mesh>
+
+        {/* Glass Panels - using MeshPhysicalMaterial for better compatibility */}
+        {[
+          [-panelW/2 - mullionThickness/4, panelH/2 + mullionThickness/4],
+          [panelW/2 + mullionThickness/4, panelH/2 + mullionThickness/4],
+          [-panelW/2 - mullionThickness/4, -panelH/2 - mullionThickness/4],
+          [panelW/2 + mullionThickness/4, -panelH/2 - mullionThickness/4],
+        ].map((pos, i) => (
+          <mesh key={i} position={[pos[0], pos[1], 0]} material={glassMaterial}>
+            <planeGeometry args={[panelW - 0.04, panelH - 0.04]} />
+          </mesh>
+        ))}
+
+        {/* Window Handle (right side) */}
+        <mesh position={[halfW - frameThickness - 0.12, 0, frameDepth/2 + 0.02]} material={handleMaterial}>
+          <boxGeometry args={[0.04, 0.22, 0.04]} />
+        </mesh>
+        <mesh position={[halfW - frameThickness - 0.12, 0.12, frameDepth/2 + 0.04]} material={handleMaterial}>
+          <boxGeometry args={[0.04, 0.04, 0.08]} />
+        </mesh>
+
+        {/* Subtle inner bevel for depth */}
+        {[
+          { pos: [0, halfH - frameThickness - 0.01, frameDepth/2], size: [frameWidth - frameThickness*2, 0.02, 0.02] },
+          { pos: [0, -halfH + frameThickness + 0.01, frameDepth/2], size: [frameWidth - frameThickness*2, 0.02, 0.02] },
+        ].map((bevel, i) => (
+          <mesh key={`bevel-${i}`} position={bevel.pos as [number, number, number]}>
+            <boxGeometry args={bevel.size as [number, number, number]} />
+            <meshPhysicalMaterial color="#e8e8e8" roughness={0.5} />
+          </mesh>
+        ))}
+
+        {/* --- DYNAMIC GRAPHICAL EFFECTS --- */}
+        {/* Weather Resistant - Rain Particles */}
+        <group visible={activeFeature === 0}>
+          <WeatherEffect />
+        </group>
+
+        {/* Energy Efficient - Thermal Aura */}
+        <group visible={activeFeature === 1}>
+          <EnergyEffect />
+        </group>
+
+        {/* Sound Insulation - Sound Waves */}
+        <group visible={activeFeature === 2}>
+          <SoundEffect />
+        </group>
+
+        {/* Low Maintenance - Sparkles */}
+        <group visible={activeFeature === 3}>
+          <MaintenanceEffect />
+        </group>
+      </group>
+  );
+}
+
+// === EFFECT COMPONENTS ===
+
+function WeatherEffect() {
+  const pointsRef = useRef<THREE.Points>(null);
+  
+  const particles = useMemo(() => {
+    const count = 200;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 6;
+      positions[i * 3 + 1] = Math.random() * 6 - 3;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 4;
+    }
+    return positions;
+  }, []);
+
+  useFrame((_, delta) => {
+    if (pointsRef.current) {
+      const positions = pointsRef.current.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < 200; i++) {
+        positions[i * 3 + 1] -= delta * 8; // Fall down rapidly
+        positions[i * 3] -= delta * 2; // Wind pushing left
+        if (positions[i * 3 + 1] < -3) {
+          positions[i * 3 + 1] = 3;
+          positions[i * 3] = (Math.random() - 0.5) * 6 + 2; // Reset wind offset
+        }
+      }
+      pointsRef.current.geometry.attributes.position.needsUpdate = true;
+    }
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" count={200} args={[particles, 3]} />
+      </bufferGeometry>
+      <pointsMaterial size={0.05} color="#93c5fd" transparent opacity={0.6} sizeAttenuation />
+    </points>
+  );
+}
+
+function EnergyEffect() {
+  const meshRef = useRef<THREE.Mesh>(null);
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.scale.x = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05;
+      meshRef.current.scale.y = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05;
+      (meshRef.current.material as THREE.MeshBasicMaterial).opacity = 0.3 + Math.sin(state.clock.elapsedTime * 3) * 0.2;
+    }
+  });
+  return (
+    <mesh ref={meshRef} position={[0, 0, -0.2]}>
+      <planeGeometry args={[4.2, 4.2]} />
+      <meshBasicMaterial color="#fcd34d" transparent opacity={0.4} blending={THREE.AdditiveBlending} depthWrite={false} />
+    </mesh>
+  );
+}
+
+function SoundEffect() {
+  const ring1 = useRef<THREE.Mesh>(null);
+  const ring2 = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    if (ring1.current) {
+      ring1.current.scale.setScalar(1 + (t % 2));
+      (ring1.current.material as THREE.MeshBasicMaterial).opacity = 1 - (t % 2);
+    }
+    if (ring2.current) {
+      ring2.current.scale.setScalar(1 + ((t + 1) % 2));
+      (ring2.current.material as THREE.MeshBasicMaterial).opacity = 1 - ((t + 1) % 2);
+    }
+  });
+
+  return (
+    <group position={[0, 0, 0.5]}>
+      <mesh ref={ring1}>
+        <ringGeometry args={[1, 1.1, 64]} />
+        <meshBasicMaterial color="#60a5fa" transparent blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh ref={ring2}>
+        <ringGeometry args={[1, 1.1, 64]} />
+        <meshBasicMaterial color="#60a5fa" transparent blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
+function MaintenanceEffect() {
+  const pointsRef = useRef<THREE.Points>(null);
+  
+  const particles = useMemo(() => {
+    const count = 50;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 4;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 4;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 1;
+    }
+    return positions;
+  }, []);
+
+  useFrame((state) => {
+    if (pointsRef.current) {
+      (pointsRef.current.material as THREE.PointsMaterial).opacity = 0.5 + Math.sin(state.clock.elapsedTime * 5) * 0.5;
+      pointsRef.current.rotation.z = state.clock.elapsedTime * 0.2;
+    }
+  });
+
+  return (
+    <points ref={pointsRef} position={[0, 0, 0.5]}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" count={50} args={[particles, 3]} />
+      </bufferGeometry>
+      <pointsMaterial size={0.15} color="#ffffff" transparent opacity={0.8} map={createSparkleTexture()} blending={THREE.AdditiveBlending} depthWrite={false} />
+    </points>
+  );
+}
+
+function createSparkleTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 32;
+  canvas.height = 32;
+  const context = canvas.getContext('2d')!;
+  const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+  gradient.addColorStop(0, 'rgba(255,255,255,1)');
+  gradient.addColorStop(0.2, 'rgba(255,255,255,0.8)');
+  gradient.addColorStop(0.5, 'rgba(255,255,255,0.2)');
+  gradient.addColorStop(1, 'rgba(255,255,255,0)');
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 32, 32);
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
+}
+
+// Error Boundary to catch WebGL / Three.js runtime errors
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class Canvas3DErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('3D Canvas Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
+// Loading / fallback UI component
+function Window3DFallback() {
+  return (
+    <div style={{
+      width: '100%',
+      height: '100%',
+      minHeight: '400px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'transparent',
+    }}>
+      <div style={{
+        position: 'relative',
+        width: '60px',
+        height: '80px',
+        border: '4px solid #1a1a1a',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        boxShadow: '0 0 25px rgba(0,0,0,0.1)',
+        background: 'transparent',
+        marginBottom: '20px'
+      }}>
+        {/* Left Fixed Pane */}
+        <div style={{ 
+          position: 'absolute', top: 0, bottom: 0, left: 0, width: '52%', 
+          borderRight: '3px solid #1a1a1a',
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.08) 100%)',
+          zIndex: 1
+        }} />
+        
+        {/* Right Sliding Pane */}
+        <div style={{ 
+          position: 'absolute', top: 0, bottom: 0, right: 0, width: '52%', 
+          borderLeft: '3px solid #1a1a1a',
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%)',
+          zIndex: 2,
+          animation: 'windowSlide 2s infinite ease-in-out',
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          {/* Handle */}
+          <div style={{ width: '3px', height: '14px', background: '#1a1a1a', marginLeft: '3px', borderRadius: '2px' }} />
+        </div>
+      </div>
+      
+      <style>{`
+        @keyframes windowSlide {
+          0%, 15%, 100% { transform: translateX(0); }
+          40%, 75% { transform: translateX(-85%); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+export default function Window3D({ onIntroFinish, activeFeature = null }: { onIntroFinish?: () => void, activeFeature?: number | null }) {
+  const [isWebGLAvailable, setIsWebGLAvailable] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Check WebGL availability
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+      if (!gl) {
+        setIsWebGLAvailable(false);
+      }
+    } catch {
+      setIsWebGLAvailable(false);
+    }
+  }, []);
+
+  if (!isClient) {
+    return <Window3DFallback />;
+  }
+
+  if (!isWebGLAvailable) {
+    return <Window3DFallback />;
+  }
+
+  return (
+    <div style={{ width: '100%', height: '100%', minHeight: '400px' }}>
+      <Canvas3DErrorBoundary fallback={<Window3DFallback />}>
+        <Canvas
+          camera={{ position: [0, 0, 7], fov: 40 }}
+          style={{ background: 'transparent' }}
+          gl={{ 
+            alpha: true, 
+            antialias: true,
+            powerPreference: 'default',
+            failIfMajorPerformanceCaveat: false,
+          }}
+          onCreated={(state) => {
+            // Ensure proper pixel ratio
+            state.gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          }}
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
+            <directionalLight position={[-3, 3, -5]} intensity={0.3} color="#b0d4ff" />
+            <spotLight position={[0, 8, 3]} intensity={0.4} angle={0.5} penumbra={0.8} />
+
+            <WindowFrame onIntroFinish={onIntroFinish} activeFeature={activeFeature} />
+
+            <ContactShadows
+              position={[0, -2.5, 0]}
+              opacity={0.2}
+              scale={8}
+              blur={2.5}
+              far={4}
+            />
+
+            <Environment preset="city" environmentIntensity={0.4} />
+
+            <OrbitControls
+              enablePan={false}
+              enableZoom={false}
+              enableRotate={true}
+              makeDefault
+              maxPolarAngle={Math.PI / 1.7}
+              minPolarAngle={Math.PI / 2.5}
+            />
+          </Suspense>
+        </Canvas>
+      </Canvas3DErrorBoundary>
+    </div>
+  );
+}

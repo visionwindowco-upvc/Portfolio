@@ -1,0 +1,296 @@
+.contactSection {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--color-off-white) 0%, #f0f6ff 100%);
+}
+
+.blob1 {
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  right: -150px;
+  animation: blob 12s ease-in-out infinite;
+}
+
+.blob2 {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  animation: blob 15s ease-in-out infinite reverse;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-2xl);
+  position: relative;
+  z-index: 1;
+}
+
+/* Form Card */
+.formCard {
+  padding: var(--space-2xl);
+}
+
+.formTitle {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-xl);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formLabel {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.submitBtn {
+  align-self: flex-start;
+  min-width: 200px;
+}
+
+/* Info Side */
+.infoSide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.infoCard {
+  padding: var(--space-xl);
+}
+
+.infoTitle {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-lg);
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.infoItem {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.infoItem strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.infoItem p {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.infoItem a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.infoItem a:hover {
+  color: var(--color-blue);
+}
+
+.infoIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--glass-blue);
+  color: var(--color-blue-deep);
+  font-size: 1.2rem;
+}
+
+/* WhatsApp Card */
+.whatsappCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, rgba(37, 211, 102, 0.02) 100%) !important;
+  border-color: rgba(37, 211, 102, 0.2) !important;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.whatsappCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.15);
+}
+
+.whatsappIcon {
+  font-size: 2rem;
+  color: #25d366;
+  flex-shrink: 0;
+}
+
+.whatsappCard strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+
+.whatsappCard span {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* Product Multi-Select */
+.multiHint {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.productGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.productChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1.5px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.productChip:hover {
+  border-color: var(--color-sky);
+  background: rgba(59, 130, 246, 0.04);
+}
+
+.productChipActive {
+  border-color: var(--color-blue);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--color-blue-deep);
+  box-shadow: 0 2px 12px rgba(59, 130, 246, 0.12);
+}
+
+.productCheckbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.productChipCheck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--glass-border);
+  font-size: 10px;
+  color: transparent;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.productChipActive .productChipCheck {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+
+/* Map */
+.mapCard {
+  padding: var(--space-sm);
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+  .formCard {
+    padding: var(--space-xl);
+  }
+  .submitBtn {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .formCard {
+    padding: var(--space-lg);
+  }
+  .formTitle {
+    font-size: var(--text-xl);
+  }
+  .infoCard {
+    padding: var(--space-lg);
+  }
+  .infoTitle {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-md);
+  }
+  .whatsappCard {
+    padding: var(--space-md) var(--space-lg);
+  }
+  .productGrid {
+    gap: 8px;
+  }
+  .productChip {
+    padding: 6px 12px;
+    font-size: var(--text-xs);
+  }
+  .productChipCheck {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+}
