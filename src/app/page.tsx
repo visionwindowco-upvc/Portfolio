@@ -160,9 +160,9 @@ const testimonials = [
 ];
 
 const productShowcase = [
-  { name: 'Casement Windows', image: '/images/products/casement-window.png', href: '/products/casement-windows' },
-  { name: 'Sliding Windows', image: '/images/products/sliding-window.png', href: '/products/sliding-windows' },
-  { name: 'French Doors', image: '/images/products/french-door.png', href: '/products/french-doors' },
+  { name: 'Casement Windows', image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/casement-window_lctpxt.jpg', href: '/products/casement-windows' },
+  { name: 'Sliding Windows', image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/sliding-window_zdnymm.jpg', href: '/products/sliding-windows' },
+  { name: 'French Doors', image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/french-door_hp6aee.jpg', href: '/products/french-doors' },
 ];
 
 // Animated Counter Component
@@ -245,11 +245,12 @@ export default function HomePage() {
         canvasH.current = rect.height;
       }
 
-      // Smooth lerp (interpolation) for the glide effect
-      motionX.set(motionX.get() + (canvasX.current - motionX.get()) * 0.1);
-      motionY.set(motionY.get() + (canvasY.current - motionY.get()) * 0.1);
-      motionW.set(motionW.get() + (canvasW.current - motionW.get()) * 0.1);
-      motionH.set(motionH.get() + (canvasH.current - motionH.get()) * 0.1);
+      // Smooth lerp — faster factor to prevent visible size distortion during transitions
+      const lerpFactor = 0.25;
+      motionX.set(motionX.get() + (canvasX.current - motionX.get()) * lerpFactor);
+      motionY.set(motionY.get() + (canvasY.current - motionY.get()) * lerpFactor);
+      motionW.set(motionW.get() + (canvasW.current - motionW.get()) * lerpFactor);
+      motionH.set(motionH.get() + (canvasH.current - motionH.get()) * lerpFactor);
 
       animationFrameId = requestAnimationFrame(updatePosition);
     };

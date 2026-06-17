@@ -6,18 +6,21 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://visionwindowco.com"),
   title: {
-    default: "Vision Window Co | Premium UPVC Windows & Doors in Vasai-Virar, Maharashtra",
+    default: "Vision Window Co | Best UPVC Windows & Doors in Vasai-Virar & Mumbai",
     template: "%s | Vision Window Co",
   },
   description:
-    "Vision Window Co offers premium UPVC windows and doors in Vasai-Virar, Maharashtra. Energy-efficient, weather-resistant, and beautifully designed casement, sliding, tilt & turn windows and French doors. Get a free quote today!",
+    "Searching for the best UPVC windows and doors near you? Vision Window Co provides premium, soundproof, and energy-efficient casement, sliding, and French UPVC windows in Vasai-Virar, Mumbai, and Maharashtra. Visit visionwindowco.com or www.visionwindowco.com to get a free quote today!",
   keywords: [
-    // Core product keywords
+    // Core product & search intent keywords
+    "vision window co",
+    "www.visionwindowco.com",
+    "visionwindowco.com",
     "UPVC windows",
-    "UPVC doors",
-    "UPVC windows and doors",
-    "uPVC window manufacturer",
+    "best UPVC doors",
+    "uPVC window manufacturer near me",
     "premium UPVC windows",
+    "soundproof windows for home",
     // Product type keywords
     "casement windows",
     "sliding windows",
@@ -25,9 +28,7 @@ export const metadata: Metadata = {
     "fixed windows",
     "French doors",
     "sliding doors",
-    "UPVC casement windows",
-    "UPVC sliding windows",
-    "UPVC French doors",
+    "UPVC sliding windows price",
     // Geo-targeted keywords (GEO)
     "UPVC windows Vasai-Virar",
     "UPVC windows Maharashtra",
@@ -37,26 +38,21 @@ export const metadata: Metadata = {
     "UPVC windows near me",
     "UPVC windows Palghar",
     "UPVC windows Thane",
-    "UPVC windows Navi Mumbai",
     "best UPVC windows in Mumbai",
     "window dealer Vasai",
-    "window installation Virar",
     // Benefit/feature keywords
     "energy efficient windows",
-    "soundproof windows",
     "noise reduction windows",
     "weather resistant windows",
     "low maintenance windows",
     "double glazed windows India",
-    "thermal insulation windows",
     // AEO question-based keywords
+    "who makes the best UPVC windows in Vasai Virar",
     "best windows for home India",
-    "UPVC vs aluminium windows",
     "cost of UPVC windows in India",
     "how long do UPVC windows last",
-    // Brand
-    "Vision Window Co",
-    "Vision Window Company",
+    "UPVC vs aluminium windows",
+    "where to buy UPVC windows in Mumbai",
   ],
   authors: [{ name: "Vision Window Co", url: "https://visionwindowco.com" }],
   creator: "Vision Window Co",
@@ -64,25 +60,25 @@ export const metadata: Metadata = {
   category: "Home Improvement",
   icons: {
     icon: [
-      { url: "/images/logo.png", sizes: "32x32", type: "image/png" },
-      { url: "/images/logo.png", sizes: "16x16", type: "image/png" },
+      { url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg", sizes: "32x32", type: "image/png" },
+      { url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg", sizes: "16x16", type: "image/png" },
     ],
     apple: [
-      { url: "/images/logo.png", sizes: "180x180", type: "image/png" },
+      { url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: "/images/logo.png",
+    shortcut: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
   },
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://visionwindowco.com",
     siteName: "Vision Window Co",
-    title: "Vision Window Co | Premium UPVC Windows & Doors in Vasai-Virar",
+    title: "Vision Window Co | Best UPVC Windows & Doors in Vasai-Virar",
     description:
-      "Transform your home with premium UPVC windows and doors. Energy-efficient, weather-resistant, and elegant designs by Vision Window Co, Vasai-Virar, Maharashtra. 1200+ projects completed.",
+      "Are you looking to upgrade your home? Transform your space with premium UPVC windows and doors. Vision Window Co in Vasai-Virar, Maharashtra offers energy-efficient, weather-resistant, and elegant designs. Explore our 1200+ completed projects.",
     images: [
       {
-        url: "/images/hero-bg.png",
+        url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/hero-bg_wjokad.jpg",
         width: 1200,
         height: 630,
         alt: "Vision Window Co — Premium UPVC Windows and Doors in Vasai-Virar, Maharashtra",
@@ -93,8 +89,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Vision Window Co | Premium UPVC Windows & Doors",
     description:
-      "Premium UPVC windows & doors in Vasai-Virar. Energy-efficient, weather-resistant, elegant designs. 1200+ projects completed. Get a free quote!",
-    images: ["/images/hero-bg.png"],
+      "Searching for high-quality UPVC windows and doors in Vasai-Virar? Vision Window Co provides elegant, noise-reducing, and weather-resistant solutions. Get a free quote!",
+    images: ["https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/hero-bg_wjokad.jpg"],
     creator: "@visionwindowco",
     site: "@visionwindowco",
   },
@@ -135,11 +131,11 @@ const organizationSchema = {
   url: "https://visionwindowco.com",
   logo: {
     "@type": "ImageObject",
-    url: "https://visionwindowco.com/images/logo.png",
+    url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
     width: 512,
     height: 512,
   },
-  image: "https://visionwindowco.com/images/logo.png",
+  image: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
   description:
     "Vision Window Co is a premium UPVC windows and doors manufacturer based in Vasai-Virar, Maharashtra, India. Specializing in casement, sliding, tilt & turn, and fixed windows as well as French and sliding doors.",
   email: "contact@visionwindowco.com",
@@ -217,7 +213,7 @@ const localBusinessSchema = {
   "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
   "@id": "https://visionwindowco.com/#localbusiness",
   name: "Vision Window Co",
-  image: "https://visionwindowco.com/images/logo.png",
+  image: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
   url: "https://visionwindowco.com",
   telephone: "+919511637830",
   email: "contact@visionwindowco.com",

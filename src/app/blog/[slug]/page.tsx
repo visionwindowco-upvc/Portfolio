@@ -90,7 +90,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       url: "https://visionwindowco.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://visionwindowco.com/images/logo.png",
+        url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
       },
     },
     publisher: {
@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       url: "https://visionwindowco.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://visionwindowco.com/images/logo.png",
+        url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
         width: 512,
         height: 512,
       },

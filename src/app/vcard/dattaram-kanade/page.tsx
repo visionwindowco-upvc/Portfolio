@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: 'profile',
     images: [
       {
-        url: 'https://res.cloudinary.com/dc3o4l7rx/image/upload/v1779890073/Transform_this_into_a_professional_202605271903_udolel.jpg',
+        url: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg',
         width: 400,
         height: 400,
         alt: 'Dattaram Madhukar Kanade — Founder & CEO of Vision Window Co',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Dattaram Kanade — Founder | Vision Window Co',
     description: 'Connect with Dattaram Kanade, Founder & CEO of Vision Window Co. Premium UPVC windows and doors in Vasai-Virar.',
-    images: ['https://res.cloudinary.com/dc3o4l7rx/image/upload/v1779890073/Transform_this_into_a_professional_202605271903_udolel.jpg'],
+    images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg'],
   },
   alternates: {
     canonical: 'https://visionwindowco.com/vcard/dattaram-kanade',
@@ -50,7 +50,7 @@ const personSchema = {
   familyName: "Kanade",
   jobTitle: "Founder & CEO",
   url: "https://visionwindowco.com/vcard/dattaram-kanade",
-  image: "https://res.cloudinary.com/dc3o4l7rx/image/upload/v1779890073/Transform_this_into_a_professional_202605271903_udolel.jpg",
+  image: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg",
   telephone: "+919511637830",
   email: "contact@visionwindowco.com",
   worksFor: {

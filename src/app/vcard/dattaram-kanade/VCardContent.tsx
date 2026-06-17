@@ -9,7 +9,7 @@ import {
   HiOutlineGlobe,
   HiOutlineDownload,
 } from 'react-icons/hi';
-import { FaWhatsapp, FaLinkedinIn, FaInstagram, FaFacebookF } from 'react-icons/fa';
+import { FaWhatsapp, FaLinkedinIn, FaInstagram, FaStore } from 'react-icons/fa';
 import styles from './vcard.module.css';
 
 const contactInfo = {
@@ -24,7 +24,7 @@ const contactInfo = {
   social: {
     linkedin: '#',
     instagram: '#',
-    facebook: '#',
+    indiamart: 'https://www.indiamart.com/visionwindowco/',
   },
 };
 
@@ -38,6 +38,7 @@ TEL;TYPE=CELL:${contactInfo.phone}
 EMAIL:${contactInfo.email}
 URL:${contactInfo.website}
 ADR;TYPE=WORK:;;${contactInfo.address};;;;
+URL;TYPE=IndiaMART:${contactInfo.social.indiamart}
 END:VCARD`;
 
   const blob = new Blob([vcf], { type: 'text/vcard' });
@@ -70,11 +71,12 @@ export default function VCardContent() {
         >
           {/* Header / Cover */}
           <div className={styles.vcardHeader}>
+            <span className={styles.headerBrand}>Vision Window Co.</span>
             <div className={styles.headerPattern} />
             <div className={styles.vcardAvatarWrap}>
               <div className={styles.vcardAvatar} style={{ overflow: 'hidden', fontSize: 0 }}>
                 <Image
-                  src="https://res.cloudinary.com/dc3o4l7rx/image/upload/v1779890073/Transform_this_into_a_professional_202605271903_udolel.jpg"
+                  src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg"
                   alt="Dattaram Kanade"
                   width={200}
                   height={200}
@@ -92,7 +94,7 @@ export default function VCardContent() {
             <span className={styles.vcardTitle}>{contactInfo.title}</span>
             <div className={styles.vcardCompany}>
               <Image
-                src="/images/logo.png"
+                src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg"
                 alt="Vision Window Co"
                 width={24}
                 height={24}
@@ -166,8 +168,8 @@ export default function VCardContent() {
               <a href={contactInfo.social.instagram} className={styles.socialBtn} aria-label="Instagram">
                 <FaInstagram />
               </a>
-              <a href={contactInfo.social.facebook} className={styles.socialBtn} aria-label="Facebook">
-                <FaFacebookF />
+              <a href={contactInfo.social.indiamart} className={styles.socialBtn} target="_blank" rel="noopener noreferrer" aria-label="IndiaMART">
+                <FaStore />
               </a>
               <a href={contactInfo.whatsapp} className={styles.socialBtn} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                 <FaWhatsapp />

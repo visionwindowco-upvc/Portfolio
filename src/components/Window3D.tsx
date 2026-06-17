@@ -4,10 +4,7 @@ import { useRef, useMemo, Suspense, useState, useEffect, Component, ReactNode } 
 import { Canvas, useFrame } from '@react-three/fiber';
 import { 
   OrbitControls, 
-  Environment, 
-  Float, 
-  MeshTransmissionMaterial,
-  ContactShadows
+  Environment
 } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -23,19 +20,18 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
   const groupRef = useRef<THREE.Group>(null);
   const baseRotX = useRef(0);
   const baseRotY = useRef(0);
-  const scrollY = useRef(0);
   const introTimer = useRef(0);
-  const introDuration = 5.0; // Extended duration for sequential assembly
+  const introDuration = 5.0;
   const hasFinishedIntro = useRef(false);
 
-  useEffect(() => {
-    // Scroll listener for parallax
-    const handleScroll = () => {
-      scrollY.current = window.scrollY;
+  // Pre-allocate quaternions to avoid GC pressure every frame
+  const _qExpl = useMemo(() => new THREE.Quaternion(), []);
+  const _qOrig = useMemo(() => new THREE.Quaternion(), []);
 
-      // Cancel intro if user scrolls
+  useEffect(() => {
+    const handleScroll = () => {
       if (introTimer.current < introDuration && window.scrollY > 10) {
-        introTimer.current = introDuration; // Fast-forward to end
+        introTimer.current = introDuration;
         if (!hasFinishedIntro.current && onIntroFinish) {
           hasFinishedIntro.current = true;
           onIntroFinish();
@@ -43,9 +39,7 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    scrollY.current = window.scrollY;
 
-    // If already scrolled past hero on mount (e.g. F5 while scrolled), skip intro entirely
     const skipIntro = window.scrollY > 100;
     if (skipIntro) {
       introTimer.current = introDuration;
@@ -55,38 +49,32 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
       }
     }
 
-    // Setup sequential assembly data for children meshes
     if (groupRef.current) {
       groupRef.current.children.forEach((child, i) => {
         child.userData.origPos = child.position.clone();
         
-        // Define sequence:
-        // 0-3: Outer Frame, 4-5: Mullions, 6-9: Glass, 10-11: Handle, 12-13: Bevels
         let delay = 0;
         let dur = 1.0;
         
-        if (i <= 3) { delay = 0.2; dur = 1.0; } // Frame first
-        else if (i <= 5) { delay = 1.2; dur = 0.8; } // Mullions next
-        else if (i <= 9) { delay = 2.0; dur = 0.8; } // Glass panels
-        else if (i <= 11) { delay = 2.8; dur = 0.6; } // Handle last
-        else { delay = 0.2; dur = 1.0; } // Bevels with frame
+        if (i <= 3) { delay = 0.2; dur = 1.0; }
+        else if (i <= 5) { delay = 1.2; dur = 0.8; }
+        else if (i <= 9) { delay = 2.0; dur = 0.8; }
+        else if (i <= 11) { delay = 2.8; dur = 0.6; }
+        else { delay = 0.2; dur = 1.0; }
 
         child.userData.delay = delay;
         child.userData.duration = dur;
-
         child.userData.origRot = child.rotation.clone();
 
         if (skipIntro) {
-          // If skipping intro, keep pieces at their original positions
           child.userData.explPos = child.position.clone();
           child.userData.explRot = child.rotation.clone();
         } else {
-          // Distribute pieces randomly behind the camera so they fly into view
           const angle = (i / groupRef.current!.children.length) * Math.PI * 2;
           child.userData.explPos = new THREE.Vector3(
             Math.cos(angle) * 10 + (Math.random() - 0.5) * 5,
             Math.sin(angle) * 10 + (Math.random() - 0.5) * 5,
-            5 + Math.random() * 5 // Start behind the camera (+Z)
+            5 + Math.random() * 5
           );
           child.userData.explRot = new THREE.Euler(
             Math.random() * Math.PI * 2,
@@ -101,131 +89,115 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
   }, []);
 
   useFrame((state, delta) => {
-    if (groupRef.current) {
-      // Advance intro timer
-      if (introTimer.current < introDuration) {
-        introTimer.current += delta;
-      }
-      const time = introTimer.current;
+    if (!groupRef.current) return;
 
-      // 1. Base subtle floating rotation (using performance.now() to avoid THREE.Clock deprecation warning)
-      const floatRotY = Math.sin(performance.now() * 0.0005) * 0.05;
-      const floatRotX = Math.cos(performance.now() * 0.0005) * 0.05;
+    if (introTimer.current < introDuration) {
+      introTimer.current += delta;
+    }
+    const time = introTimer.current;
+
+    // Use performance.now() for float to avoid clock issues
+    const now = performance.now() * 0.0005;
+    const floatRotY = Math.sin(now) * 0.05;
+    const floatRotX = Math.cos(now) * 0.05;
+    
+    let normalRotX = 0;
+    let normalRotY = 0;
+
+    if (activeFeature === null) {
+      const scrollRotY = (window.scrollY / window.innerHeight) * Math.PI * 0.1;
+      const targetRotY = (globalPointer.x * Math.PI) / 12;
+      const targetRotX = -(globalPointer.y * Math.PI) / 24;
       
-      let normalRotX = 0;
-      let normalRotY = 0;
-
-      if (activeFeature === null) {
-        // Normal parallax when no feature is active
-        const scrollRotY = (window.scrollY / window.innerHeight) * Math.PI * 0.1;
-        const targetRotY = (globalPointer.x * Math.PI) / 12;
-        const targetRotX = -(globalPointer.y * Math.PI) / 24;
-        
-        normalRotX = THREE.MathUtils.lerp(baseRotX.current, targetRotX + floatRotX, 0.05);
-        normalRotY = THREE.MathUtils.lerp(baseRotY.current, targetRotY + floatRotY + scrollRotY, 0.05);
-      } else {
-        // Dynamic rotations for features
-        let targetRotX = floatRotX;
-        let targetRotY = floatRotY;
-        
-        switch (activeFeature) {
-          case 0: // Weather
-            targetRotY += Math.PI / 8;
-            targetRotX -= Math.PI / 16;
-            break;
-          case 1: // Energy
-            targetRotY -= Math.PI / 6;
-            break;
-          case 2: // Sound
-            targetRotY = 0;
-            break;
-          case 3: // Maintenance
-            targetRotY += Math.PI / 4;
-            targetRotX += Math.PI / 12;
-            break;
-        }
-        
-        normalRotX = THREE.MathUtils.lerp(baseRotX.current, targetRotX, 0.04);
-        normalRotY = THREE.MathUtils.lerp(baseRotY.current, targetRotY, 0.04);
+      normalRotX = THREE.MathUtils.lerp(baseRotX.current, targetRotX + floatRotX, 0.05);
+      normalRotY = THREE.MathUtils.lerp(baseRotY.current, targetRotY + floatRotY + scrollRotY, 0.05);
+    } else {
+      let targetRotX = floatRotX;
+      let targetRotY = floatRotY;
+      
+      switch (activeFeature) {
+        case 0:
+          targetRotY += Math.PI / 8;
+          targetRotX -= Math.PI / 16;
+          break;
+        case 1:
+          targetRotY -= Math.PI / 6;
+          break;
+        case 2:
+          targetRotY = 0;
+          break;
+        case 3:
+          targetRotY += Math.PI / 4;
+          targetRotX += Math.PI / 12;
+          break;
       }
+      
+      normalRotX = THREE.MathUtils.lerp(baseRotX.current, targetRotX, 0.04);
+      normalRotY = THREE.MathUtils.lerp(baseRotY.current, targetRotY, 0.04);
+    }
 
-      baseRotX.current = normalRotX;
-      baseRotY.current = normalRotY;
+    baseRotX.current = normalRotX;
+    baseRotY.current = normalRotY;
 
-      if (time < introDuration) {
-        // ==== SEQUENTIAL ASSEMBLY MODE ====
-        
-        // Group animation: Stay large/close for the first 3.5s, then fly back to normal
-        let groupProgress = 0;
-        if (time > 3.5) {
-          groupProgress = Math.min((time - 3.5) / 1.5, 1.0);
+    if (time < introDuration) {
+      let groupProgress = 0;
+      if (time > 3.5) {
+        groupProgress = Math.min((time - 3.5) / 1.5, 1.0);
+      }
+      const easeOutGroup = 1 - Math.pow(1 - groupProgress, 4);
+
+      const introSpinY = THREE.MathUtils.lerp(-Math.PI * 2 - Math.PI / 8, 0, easeOutGroup);
+      const zPos = THREE.MathUtils.lerp(0.8, 0, easeOutGroup);
+      groupRef.current.position.z = zPos;
+      
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, normalRotX, delta * 4);
+      groupRef.current.rotation.y = normalRotY + introSpinY;
+
+      groupRef.current.children.forEach((child) => {
+        if (child.userData.origPos) {
+          const delay = child.userData.delay;
+          const dur = child.userData.duration;
+          let pieceProgress = 0;
+          if (time > delay) {
+            pieceProgress = Math.min((time - delay) / dur, 1.0);
+          }
+          const easeOutPiece = 1 - Math.pow(1 - pieceProgress, 4);
+
+          child.position.lerpVectors(child.userData.explPos, child.userData.origPos, easeOutPiece);
+          
+          // Reuse pre-allocated quaternions instead of creating new ones every frame
+          _qExpl.setFromEuler(child.userData.explRot);
+          _qOrig.setFromEuler(child.userData.origRot);
+          child.quaternion.slerpQuaternions(_qExpl, _qOrig, easeOutPiece);
         }
-        const easeOutGroup = 1 - Math.pow(1 - groupProgress, 4);
-
-        // Slow cinematic 360 spin during assembly, then lock to mouse
-        const introSpinY = THREE.MathUtils.lerp(-Math.PI * 2 - Math.PI / 8, 0, easeOutGroup);
+      });
+    } else {
+      if (!hasFinishedIntro.current) {
+        hasFinishedIntro.current = true;
         
-        // Z-position: start at 0.8 (comfortable size, not too huge) and lerp back to 0
-        const zPos = THREE.MathUtils.lerp(0.8, 0, easeOutGroup);
-        groupRef.current.position.z = zPos;
-        
-        groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, normalRotX, delta * 4);
-        groupRef.current.rotation.y = normalRotY + introSpinY;
-
-        // Animate individual pieces assembling
+        groupRef.current.position.z = 0;
         groupRef.current.children.forEach((child) => {
           if (child.userData.origPos) {
-            const delay = child.userData.delay;
-            const dur = child.userData.duration;
-            let pieceProgress = 0;
-            if (time > delay) {
-              pieceProgress = Math.min((time - delay) / dur, 1.0);
-            }
-            // Quartic ease out for pieces
-            const easeOutPiece = 1 - Math.pow(1 - pieceProgress, 4);
-
-            // Position interpolation
-            child.position.lerpVectors(child.userData.explPos, child.userData.origPos, easeOutPiece);
-            
-            // Rotation interpolation
-            const qExpl = new THREE.Quaternion().setFromEuler(child.userData.explRot);
-            const qOrig = new THREE.Quaternion().setFromEuler(child.userData.origRot);
-            child.quaternion.slerpQuaternions(qExpl, qOrig, easeOutPiece);
-          }
-        });
-      } else {
-        // Trigger completion callback once and ensure everything is fully assembled
-        if (!hasFinishedIntro.current) {
-          hasFinishedIntro.current = true;
-          
-          // Force all pieces to their final assembled positions instantly
-          groupRef.current.position.z = 0;
-          groupRef.current.children.forEach((child) => {
-            if (child.userData.origPos) {
-              child.position.copy(child.userData.origPos);
-              child.rotation.copy(child.userData.origRot);
-            }
-          });
-
-          if (onIntroFinish) onIntroFinish();
-        }
-
-        // ==== INTERACTIVE PARALLAX MODE ====
-        
-        // Ensure pieces are snapped perfectly in place after intro
-        if (groupRef.current.children[0]?.userData.origPos && 
-            groupRef.current.children[0].position.distanceTo(groupRef.current.children[0].userData.origPos) > 0.001) {
-          groupRef.current.children.forEach((child) => {
             child.position.copy(child.userData.origPos);
             child.rotation.copy(child.userData.origRot);
-          });
-        }
+          }
+        });
 
-        // Standard smooth interpolation
-        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 0, delta * 4);
-        groupRef.current.rotation.x = normalRotX;
-        groupRef.current.rotation.y = normalRotY;
+        if (onIntroFinish) onIntroFinish();
       }
+
+      // Snap pieces if not perfectly in place
+      if (groupRef.current.children[0]?.userData.origPos && 
+          groupRef.current.children[0].position.distanceTo(groupRef.current.children[0].userData.origPos) > 0.001) {
+        groupRef.current.children.forEach((child) => {
+          child.position.copy(child.userData.origPos);
+          child.rotation.copy(child.userData.origRot);
+        });
+      }
+
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 0, delta * 4);
+      groupRef.current.rotation.x = normalRotX;
+      groupRef.current.rotation.y = normalRotY;
     }
   });
 
@@ -252,23 +224,19 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
     envMapIntensity: 1.2,
   }), []);
 
-  // Glass material - simplified for better compatibility
+  // Simplified glass material — no transmission (huge perf hit)
   const glassMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
     color: new THREE.Color('#d4eaff'),
     transparent: true,
-    opacity: 0.3,
+    opacity: 0.35,
     roughness: 0.05,
     metalness: 0.1,
     clearcoat: 1.0,
     clearcoatRoughness: 0.05,
     envMapIntensity: 0.8,
     side: THREE.DoubleSide,
-    transmission: 0.9,
-    thickness: 0.3,
-    ior: 1.52,
   }), []);
 
-  // Calculate glass panel positions (2x2 grid)
   const halfW = frameWidth / 2;
   const halfH = frameHeight / 2;
   const panelW = (frameWidth - frameThickness * 2 - mullionThickness) / 2;
@@ -302,7 +270,7 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
           <boxGeometry args={[frameWidth - frameThickness * 2, mullionThickness, frameDepth]} />
         </mesh>
 
-        {/* Glass Panels - using MeshPhysicalMaterial for better compatibility */}
+        {/* Glass Panels */}
         {[
           [-panelW/2 - mullionThickness/4, panelH/2 + mullionThickness/4],
           [panelW/2 + mullionThickness/4, panelH/2 + mullionThickness/4],
@@ -363,7 +331,7 @@ function WeatherEffect() {
   const pointsRef = useRef<THREE.Points>(null);
   
   const particles = useMemo(() => {
-    const count = 200;
+    const count = 100; // Reduced from 200
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 6;
@@ -376,12 +344,12 @@ function WeatherEffect() {
   useFrame((_, delta) => {
     if (pointsRef.current) {
       const positions = pointsRef.current.geometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < 200; i++) {
-        positions[i * 3 + 1] -= delta * 8; // Fall down rapidly
-        positions[i * 3] -= delta * 2; // Wind pushing left
+      for (let i = 0; i < 100; i++) {
+        positions[i * 3 + 1] -= delta * 8;
+        positions[i * 3] -= delta * 2;
         if (positions[i * 3 + 1] < -3) {
           positions[i * 3 + 1] = 3;
-          positions[i * 3] = (Math.random() - 0.5) * 6 + 2; // Reset wind offset
+          positions[i * 3] = (Math.random() - 0.5) * 6 + 2;
         }
       }
       pointsRef.current.geometry.attributes.position.needsUpdate = true;
@@ -391,7 +359,7 @@ function WeatherEffect() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={200} args={[particles, 3]} />
+        <bufferAttribute attach="attributes-position" count={100} args={[particles, 3]} />
       </bufferGeometry>
       <pointsMaterial size={0.05} color="#93c5fd" transparent opacity={0.6} sizeAttenuation />
     </points>
@@ -434,49 +402,21 @@ function SoundEffect() {
   return (
     <group position={[0, 0, 0.5]}>
       <mesh ref={ring1}>
-        <ringGeometry args={[1, 1.1, 64]} />
+        <ringGeometry args={[1, 1.1, 32]} />
         <meshBasicMaterial color="#60a5fa" transparent blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
       </mesh>
       <mesh ref={ring2}>
-        <ringGeometry args={[1, 1.1, 64]} />
+        <ringGeometry args={[1, 1.1, 32]} />
         <meshBasicMaterial color="#60a5fa" transparent blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
 }
 
-function MaintenanceEffect() {
-  const pointsRef = useRef<THREE.Points>(null);
-  
-  const particles = useMemo(() => {
-    const count = 50;
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 4;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 4;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 1;
-    }
-    return positions;
-  }, []);
-
-  useFrame((state) => {
-    if (pointsRef.current) {
-      (pointsRef.current.material as THREE.PointsMaterial).opacity = 0.5 + Math.sin(state.clock.elapsedTime * 5) * 0.5;
-      pointsRef.current.rotation.z = state.clock.elapsedTime * 0.2;
-    }
-  });
-
-  return (
-    <points ref={pointsRef} position={[0, 0, 0.5]}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={50} args={[particles, 3]} />
-      </bufferGeometry>
-      <pointsMaterial size={0.15} color="#ffffff" transparent opacity={0.8} map={createSparkleTexture()} blending={THREE.AdditiveBlending} depthWrite={false} />
-    </points>
-  );
-}
-
-function createSparkleTexture() {
+// Memoize the sparkle texture so it's only created once
+let _sparkleTexture: THREE.CanvasTexture | null = null;
+function getSparkleTexture() {
+  if (_sparkleTexture) return _sparkleTexture;
   const canvas = document.createElement('canvas');
   canvas.width = 32;
   canvas.height = 32;
@@ -488,8 +428,41 @@ function createSparkleTexture() {
   gradient.addColorStop(1, 'rgba(255,255,255,0)');
   context.fillStyle = gradient;
   context.fillRect(0, 0, 32, 32);
-  const texture = new THREE.CanvasTexture(canvas);
-  return texture;
+  _sparkleTexture = new THREE.CanvasTexture(canvas);
+  return _sparkleTexture;
+}
+
+function MaintenanceEffect() {
+  const pointsRef = useRef<THREE.Points>(null);
+  
+  const particles = useMemo(() => {
+    const count = 30; // Reduced from 50
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 4;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 4;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 1;
+    }
+    return positions;
+  }, []);
+
+  const sparkleMap = useMemo(() => getSparkleTexture(), []);
+
+  useFrame((state) => {
+    if (pointsRef.current) {
+      (pointsRef.current.material as THREE.PointsMaterial).opacity = 0.5 + Math.sin(state.clock.elapsedTime * 5) * 0.5;
+      pointsRef.current.rotation.z = state.clock.elapsedTime * 0.2;
+    }
+  });
+
+  return (
+    <points ref={pointsRef} position={[0, 0, 0.5]}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" count={30} args={[particles, 3]} />
+      </bufferGeometry>
+      <pointsMaterial size={0.15} color="#ffffff" transparent opacity={0.8} map={sparkleMap} blending={THREE.AdditiveBlending} depthWrite={false} />
+    </points>
+  );
 }
 
 // Error Boundary to catch WebGL / Three.js runtime errors
@@ -613,32 +586,23 @@ export default function Window3D({ onIntroFinish, activeFeature = null }: { onIn
         <Canvas
           camera={{ position: [0, 0, 7], fov: 40 }}
           style={{ background: 'transparent' }}
+          dpr={[1, 1.5]}
+          frameloop="always"
           gl={{ 
             alpha: true, 
-            antialias: true,
+            antialias: false,
             powerPreference: 'default',
             failIfMajorPerformanceCaveat: false,
-          }}
-          onCreated={(state) => {
-            // Ensure proper pixel ratio
-            state.gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            stencil: false,
+            depth: true,
           }}
         >
           <Suspense fallback={null}>
             <ambientLight intensity={0.5} />
-            <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
+            <directionalLight position={[5, 5, 5]} intensity={0.8} />
             <directionalLight position={[-3, 3, -5]} intensity={0.3} color="#b0d4ff" />
-            <spotLight position={[0, 8, 3]} intensity={0.4} angle={0.5} penumbra={0.8} />
 
             <WindowFrame onIntroFinish={onIntroFinish} activeFeature={activeFeature} />
-
-            <ContactShadows
-              position={[0, -2.5, 0]}
-              opacity={0.2}
-              scale={8}
-              blur={2.5}
-              far={4}
-            />
 
             <Environment preset="city" environmentIntensity={0.4} />
 

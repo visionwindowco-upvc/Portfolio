@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { HiOutlinePhone, HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
+import { FaStore, FaInstagram, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
 import styles from './Footer.module.css';
 
 const quickLinks = [
@@ -31,7 +31,7 @@ export default function Footer() {
           <div className={styles.footerBrand}>
             <Link href="/" className={styles.footerLogo}>
               <Image
-                src="/images/logo.png"
+                src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg"
                 alt="Vision Window Co"
                 width={44}
                 height={44}
@@ -47,7 +47,7 @@ export default function Footer() {
               energy efficiency, and lasting quality.
             </p>
             <div className={styles.socialLinks}>
-              <a href="#" aria-label="Facebook" className={styles.socialLink}><FaFacebookF /></a>
+              <a href="https://www.indiamart.com/visionwindowco/" aria-label="IndiaMART" className={styles.socialLink} target="_blank" rel="noopener noreferrer"><FaStore /></a>
               <a href="#" aria-label="Instagram" className={styles.socialLink}><FaInstagram /></a>
               <a href="#" aria-label="LinkedIn" className={styles.socialLink}><FaLinkedinIn /></a>
               <a href="https://wa.me/919511637830" aria-label="WhatsApp" className={styles.socialLink} target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>

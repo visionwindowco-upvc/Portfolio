@@ -66,10 +66,18 @@
 .vcardHeader {
   position: relative;
   height: 180px;
-  background: url('https://res.cloudinary.com/dc3o4l7rx/image/upload/v1779892979/20d23594-5d8d-445c-92f2-b9c47a2e4bf0.png') center/cover no-repeat;
+  background: #ffffff;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
+}
+
+.headerBrand {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
 }
 
 .headerPattern {

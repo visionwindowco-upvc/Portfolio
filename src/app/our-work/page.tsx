@@ -2,31 +2,30 @@ import type { Metadata } from 'next';
 import WorkContent from './WorkContent';
 
 export const metadata: Metadata = {
-  title: 'Our Work — 1200+ Completed UPVC Window & Door Projects',
-  description: 'Browse Vision Window Co\'s portfolio of 1200+ completed UPVC window and door projects across residential, commercial, and hospitality sectors in Mumbai, Thane, Vasai-Virar, and Maharashtra.',
+  title: 'Our Work — 1200+ UPVC Window & Door Projects | Vision Window Co',
+  description: 'Want to see examples of UPVC windows installed in real homes? Browse Vision Window Co\'s impressive portfolio of 1200+ completed UPVC window and door projects across Mumbai, Thane, and Vasai-Virar on visionwindowco.com.',
   keywords: [
+    'vision window co reviews',
+    'vision window co projects',
+    'examples of UPVC windows in homes',
     'UPVC window projects',
     'UPVC door projects',
     'completed window installations',
     'UPVC portfolio Maharashtra',
     'window projects Mumbai',
-    'window projects Thane',
     'residential window installations',
-    'commercial window projects',
-    'hospital windows',
-    'resort windows UPVC',
-    'window installation portfolio',
+    'commercial UPVC windows',
   ],
   openGraph: {
     title: 'Our Work — 1200+ Completed Projects | Vision Window Co',
-    description: 'Explore our portfolio of premium UPVC window and door installations across residential, commercial, and hospitality sectors in Maharashtra.',
+    description: 'Looking for inspiration for your new windows? Explore our portfolio of premium UPVC window and door installations across residential, commercial, and hospitality sectors in Maharashtra at www.visionwindowco.com.',
     url: 'https://visionwindowco.com/our-work',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
     images: [
       {
-        url: '/images/projects/commercial-building.png',
+        url: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/commercial-building_vwf7gc.jpg',
         width: 1200,
         height: 630,
         alt: 'Vision Window Co Completed UPVC Projects Portfolio',
@@ -36,8 +35,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Our Work — 1200+ Projects | Vision Window Co',
-    description: 'UPVC window & door installations across residential, commercial, and hospitality sectors.',
-    images: ['/images/projects/commercial-building.png'],
+    description: 'Need proof of quality? Check out our 1200+ completed UPVC window & door installations across residential, commercial, and hospitality sectors.',
+    images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/commercial-building_vwf7gc.jpg'],
   },
   alternates: {
     canonical: 'https://visionwindowco.com/our-work',
@@ -64,7 +63,7 @@ const collectionPageSchema = {
         "@type": "ImageObject",
         name: "Rainbow School",
         description: "Complete UPVC window installation for a prestigious school with energy-efficient casement and fixed glass systems.",
-        contentUrl: "https://visionwindowco.com/images/projects/commercial-building.png",
+        contentUrl: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/commercial-building_vwf7gc.jpg",
         contentLocation: {
           "@type": "Place",
           name: "Thane, Maharashtra",
@@ -74,7 +73,7 @@ const collectionPageSchema = {
         "@type": "ImageObject",
         name: "JK Infra Residential",
         description: "Large-scale residential project featuring premium sliding and casement UPVC windows.",
-        contentUrl: "https://visionwindowco.com/images/projects/residential-complex.png",
+        contentUrl: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/residential-complex_jcqtjy.jpg",
         contentLocation: {
           "@type": "Place",
           name: "Mira Road, Maharashtra",
@@ -84,7 +83,7 @@ const collectionPageSchema = {
         "@type": "ImageObject",
         name: "MG Hospital",
         description: "Healthcare facility equipped with sound-insulating UPVC sliding windows for patient comfort.",
-        contentUrl: "https://visionwindowco.com/images/projects/hospital.png",
+        contentUrl: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/hospital_ykx2tl.jpg",
         contentLocation: {
           "@type": "Place",
           name: "Vashi, Maharashtra",
@@ -94,7 +93,7 @@ const collectionPageSchema = {
         "@type": "ImageObject",
         name: "Stay by Lake Resort",
         description: "Premium lakeside resort with French doors, panoramic sliding systems, and tilt & turn windows.",
-        contentUrl: "https://visionwindowco.com/images/projects/luxury-villa.png",
+        contentUrl: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/luxury-villa_blzsse.jpg",
         contentLocation: {
           "@type": "Place",
           name: "Palghar, Maharashtra",
@@ -104,7 +103,7 @@ const collectionPageSchema = {
         "@type": "ImageObject",
         name: "Bridge Candy",
         description: "Commercial establishment with elegant UPVC window and door solutions.",
-        contentUrl: "https://visionwindowco.com/images/projects/interior.png",
+        contentUrl: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/interior_vvfxh2.jpg",
         contentLocation: {
           "@type": "Place",
           name: "Mumbai, Maharashtra",

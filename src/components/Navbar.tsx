@@ -60,7 +60,7 @@ export default function Navbar() {
         <div className={`container ${styles.navContainer}`}>
           <Link href="/" className={styles.logo} aria-label="Vision Window Co Home">
             <Image
-              src="/images/logo.png"
+              src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg"
               alt="Vision Window Co Logo"
               width={48}
               height={48}
@@ -129,7 +129,7 @@ export default function Navbar() {
               <div className={styles.mobileMenuContent}>
                 <div className={styles.mobileMenuHeader}>
                   <Image
-                    src="/images/logo.png"
+                    src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg"
                     alt="Vision Window Co"
                     width={40}
                     height={40}

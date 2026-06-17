@@ -82,7 +82,7 @@ export default function AboutContent() {
               transition={{ duration: 0.6 }}
             >
               <Image
-                src="/images/about-team.png"
+                src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/about-team_oo7dbu.jpg"
                 alt="Vision Window Co Manufacturing"
                 width={600}
                 height={450}
@@ -222,7 +222,7 @@ export default function AboutContent() {
             <div style={{ display: 'flex', gap: 'var(--space-xl)', flexWrap: 'wrap', alignItems: 'flex-start' }}>
               <div className={styles.founderAvatar} style={{ flexShrink: 0, width: 140, height: 140, fontSize: 0, overflow: 'hidden' }}>
                 <Image
-                  src="https://res.cloudinary.com/dc3o4l7rx/image/upload/v1779890073/Transform_this_into_a_professional_202605271903_udolel.jpg"
+                  src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg"
                   alt="Dattaram Madhukar Kanade"
                   width={200}
                   height={200}

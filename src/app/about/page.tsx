@@ -2,26 +2,28 @@ import type { Metadata } from 'next';
 import AboutContent from './AboutContent';
 
 export const metadata: Metadata = {
-  title: 'About Us — Our Story, Mission & Values',
-  description: 'Learn about Vision Window Co — founded in 2013 by Dattaram Kanade. 1200+ projects completed. Premium UPVC windows and doors manufacturer in Vasai-Virar, Maharashtra. Our story, mission, and values.',
+  title: 'About Vision Window Co | Our Story & Mission',
+  description: 'Curious about who is behind Vision Window Co? Founded in 2013 by Dattaram Kanade, we are the leading premium UPVC windows and doors manufacturer in Vasai-Virar, Maharashtra, with over 1200+ successfully completed projects.',
   keywords: [
     'about Vision Window Co',
+    'who owns Vision Window Co',
+    'Vision Window Co founder',
     'UPVC window manufacturer Vasai-Virar',
     'Dattaram Kanade',
-    'UPVC company Maharashtra',
-    'window manufacturer history',
+    'best UPVC company in Maharashtra',
+    'visionwindowco.com about us',
     'premium window company India',
   ],
   openGraph: {
     title: 'About Vision Window Co — Premium UPVC Manufacturer Since 2013',
-    description: 'From a small workshop to 1200+ completed projects — discover Vision Window Co\'s journey, mission, and commitment to premium UPVC windows and doors in Maharashtra.',
+    description: 'Ever wondered who makes the best UPVC windows in Maharashtra? From a small workshop to 1200+ completed projects, discover Vision Window Co\'s journey and our commitment to quality at visionwindowco.com.',
     url: 'https://visionwindowco.com/about',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
     images: [
       {
-        url: '/images/about-team.png',
+        url: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/about-team_oo7dbu.jpg',
         width: 1200,
         height: 630,
         alt: 'Vision Window Co Team and Manufacturing Facility in Vasai-Virar',
@@ -31,8 +33,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'About Vision Window Co | UPVC Manufacturer Since 2013',
-    description: 'From a small workshop to 1200+ completed projects. Meet our team and discover our commitment to premium UPVC solutions.',
-    images: ['/images/about-team.png'],
+    description: 'Discover the story behind Vision Window Co. From a small workshop to 1200+ completed projects, meet the team dedicated to premium UPVC solutions.',
+    images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/about-team_oo7dbu.jpg'],
   },
   alternates: {
     canonical: 'https://visionwindowco.com/about',

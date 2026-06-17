@@ -40,7 +40,7 @@ export const blogPosts: BlogPost[] = [
     author: 'Vision Window Co',
     date: 'May 20, 2026',
     readTime: '5 min read',
-    image: '/images/products/casement-window.png',
+    image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/casement-window_lctpxt.jpg',
   },
   {
     id: 2,
@@ -61,7 +61,7 @@ export const blogPosts: BlogPost[] = [
     author: 'Vision Window Co',
     date: 'May 15, 2026',
     readTime: '4 min read',
-    image: '/images/products/fixed-window.png',
+    image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720949/fixed-window_mz6gxs.jpg',
   },
   {
     id: 3,
@@ -82,7 +82,7 @@ export const blogPosts: BlogPost[] = [
     author: 'Vision Window Co',
     date: 'May 10, 2026',
     readTime: '7 min read',
-    image: '/images/products/sliding-window.png',
+    image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/sliding-window_zdnymm.jpg',
   },
   {
     id: 4,
@@ -100,7 +100,7 @@ export const blogPosts: BlogPost[] = [
     author: 'Vision Window Co',
     date: 'May 5, 2026',
     readTime: '4 min read',
-    image: '/images/products/tilt-turn-window.png',
+    image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/tilt-turn-window_iyymig.jpg',
   },
   {
     id: 5,
@@ -118,7 +118,7 @@ export const blogPosts: BlogPost[] = [
     author: 'Vision Window Co',
     date: 'Apr 28, 2026',
     readTime: '5 min read',
-    image: '/images/products/french-door.png',
+    image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/french-door_hp6aee.jpg',
   },
   {
     id: 6,
@@ -139,6 +139,6 @@ export const blogPosts: BlogPost[] = [
     author: 'Vision Window Co',
     date: 'Apr 20, 2026',
     readTime: '3 min read',
-    image: '/images/products/sliding-door.png',
+    image: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/sliding-door_zjjmm6.jpg',
   }
 ];

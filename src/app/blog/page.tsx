@@ -3,30 +3,30 @@ import BlogContent from './BlogContent';
 import { blogPosts } from '@/lib/data/blogs';
 
 export const metadata: Metadata = {
-  title: 'Blog — UPVC Windows & Doors Expert Insights & Guides',
-  description: 'Expert insights, tips, and guides on UPVC windows and doors from Vision Window Co. Learn about energy efficiency, UPVC vs aluminium, maintenance tips, design trends, and more.',
+  title: 'Blog — UPVC Windows & Doors Expert Insights | Vision Window Co',
+  description: 'Wondering which windows are best for your home? Read expert insights, tips, and guides on UPVC windows and doors from Vision Window Co. Learn about energy efficiency, UPVC vs aluminium, and maintenance tips at www.visionwindowco.com.',
   keywords: [
-    'UPVC windows blog',
-    'UPVC doors tips',
-    'energy efficient windows guide',
+    'are UPVC windows good for Indian weather',
     'UPVC vs aluminium',
+    'how to choose windows for home',
+    'visionwindowco.com blog',
+    'UPVC windows blog',
+    'energy efficient windows guide',
     'window maintenance tips',
     'UPVC window design trends',
-    'how to choose windows',
     'UPVC benefits',
     'window installation guide',
-    'home improvement windows',
   ],
   openGraph: {
     title: 'Blog — Expert UPVC Insights | Vision Window Co',
-    description: 'Expert insights, tips, and guides on UPVC windows and doors. Energy efficiency, maintenance, design trends, and buying guides.',
+    description: 'Not sure if UPVC is right for you? Read expert insights, tips, and guides on UPVC windows and doors. Learn about energy efficiency, maintenance, and buying guides at visionwindowco.com.',
     url: 'https://visionwindowco.com/blog',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
     images: [
       {
-        url: '/images/hero-bg.png',
+        url: 'https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/hero-bg_wjokad.jpg',
         width: 1200,
         height: 630,
         alt: 'Vision Window Co Blog — UPVC Windows & Doors Insights',
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Blog — UPVC Expert Insights | Vision Window Co',
-    description: 'Tips, guides, and insights on UPVC windows and doors from Vision Window Co experts.',
-    images: ['/images/hero-bg.png'],
+    description: 'Need help choosing the right windows? Read tips, guides, and insights on UPVC windows and doors from Vision Window Co experts.',
+    images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/hero-bg_wjokad.jpg'],
   },
   alternates: {
     canonical: 'https://visionwindowco.com/blog',
@@ -58,7 +58,7 @@ const blogSchema = {
     url: "https://visionwindowco.com",
     logo: {
       "@type": "ImageObject",
-      url: "https://visionwindowco.com/images/logo.png",
+      url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
     },
   },
   isPartOf: { "@id": "https://visionwindowco.com/#website" },
