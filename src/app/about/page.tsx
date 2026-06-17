@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'About Vision Window Co — Premium UPVC Manufacturer Since 2013',
     description: 'Ever wondered who makes the best UPVC windows in Maharashtra? From a small workshop to 1200+ completed projects, discover Vision Window Co\'s journey and our commitment to quality at visionwindowco.com.',
-    url: 'https://visionwindowco.com/about',
+    url: 'https://www.visionwindowco.com/about',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/about-team_oo7dbu.jpg'],
   },
   alternates: {
-    canonical: 'https://visionwindowco.com/about',
+    canonical: 'https://www.visionwindowco.com/about',
   },
 };
 
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
 const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  "@id": "https://visionwindowco.com/about/#aboutpage",
-  url: "https://visionwindowco.com/about",
+  "@id": "https://www.visionwindowco.com/about/#aboutpage",
+  url: "https://www.visionwindowco.com/about",
   name: "About Vision Window Co",
   description: "Learn about Vision Window Co — our story, mission, values, and commitment to premium UPVC windows and doors in Vasai-Virar, Maharashtra.",
-  isPartOf: { "@id": "https://visionwindowco.com/#website" },
-  about: { "@id": "https://visionwindowco.com/#organization" },
+  isPartOf: { "@id": "https://www.visionwindowco.com/#website" },
+  about: { "@id": "https://www.visionwindowco.com/#organization" },
   mainEntity: {
-    "@id": "https://visionwindowco.com/#organization",
+    "@id": "https://www.visionwindowco.com/#organization",
   },
   inLanguage: "en-IN",
 };
@@ -60,14 +60,14 @@ const aboutPageSchema = {
 const founderSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": "https://visionwindowco.com/vcard/dattaram-kanade/#person",
+  "@id": "https://www.visionwindowco.com/vcard/dattaram-kanade/#person",
   name: "Dattaram Madhukar Kanade",
   jobTitle: "Founder & CEO",
-  url: "https://visionwindowco.com/vcard/dattaram-kanade",
+  url: "https://www.visionwindowco.com/vcard/dattaram-kanade",
   worksFor: {
     "@type": "Organization",
     name: "Vision Window Co",
-    url: "https://visionwindowco.com",
+    url: "https://www.visionwindowco.com",
   },
   address: {
     "@type": "PostalAddress",
@@ -94,13 +94,13 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://visionwindowco.com",
+      item: "https://www.visionwindowco.com",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "About Us",
-      item: "https://visionwindowco.com/about",
+      item: "https://www.visionwindowco.com/about",
     },
   ],
 };

@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://visionwindowco.com"),
+  metadataBase: new URL("https://www.visionwindowco.com"),
   title: {
     default: "Vision Window Co | Best UPVC Windows & Doors in Vasai-Virar & Mumbai",
     template: "%s | Vision Window Co",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     "UPVC vs aluminium windows",
     "where to buy UPVC windows in Mumbai",
   ],
-  authors: [{ name: "Vision Window Co", url: "https://visionwindowco.com" }],
+  authors: [{ name: "Vision Window Co", url: "https://www.visionwindowco.com" }],
   creator: "Vision Window Co",
   publisher: "Vision Window Co",
   category: "Home Improvement",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://visionwindowco.com",
+    url: "https://www.visionwindowco.com",
     siteName: "Vision Window Co",
     title: "Vision Window Co | Best UPVC Windows & Doors in Vasai-Virar",
     description:
@@ -106,7 +106,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://visionwindowco.com",
+    canonical: "https://www.visionwindowco.com",
   },
   verification: {
     // Fill these in once you register with search consoles
@@ -125,10 +125,10 @@ export const metadata: Metadata = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://visionwindowco.com/#organization",
+  "@id": "https://www.visionwindowco.com/#organization",
   name: "Vision Window Co",
   alternateName: "Vision Window Company",
-  url: "https://visionwindowco.com",
+  url: "https://www.visionwindowco.com",
   logo: {
     "@type": "ImageObject",
     url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
@@ -145,7 +145,7 @@ const organizationSchema = {
     "@type": "Person",
     name: "Dattaram Kanade",
     jobTitle: "Founder & CEO",
-    url: "https://visionwindowco.com/vcard/dattaram-kanade",
+    url: "https://www.visionwindowco.com/vcard/dattaram-kanade",
   },
   numberOfEmployees: {
     "@type": "QuantitativeValue",
@@ -189,11 +189,11 @@ const organizationSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://visionwindowco.com/#website",
+  "@id": "https://www.visionwindowco.com/#website",
   name: "Vision Window Co",
-  url: "https://visionwindowco.com",
+  url: "https://www.visionwindowco.com",
   publisher: {
-    "@id": "https://visionwindowco.com/#organization",
+    "@id": "https://www.visionwindowco.com/#organization",
   },
   description:
     "Premium UPVC windows and doors manufacturer in Vasai-Virar, Maharashtra. Browse products, view completed projects, and get a free quote.",
@@ -201,7 +201,7 @@ const websiteSchema = {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: "https://visionwindowco.com/products?q={search_term_string}",
+      urlTemplate: "https://www.visionwindowco.com/products?q={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },
@@ -211,10 +211,10 @@ const websiteSchema = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
-  "@id": "https://visionwindowco.com/#localbusiness",
+  "@id": "https://www.visionwindowco.com/#localbusiness",
   name: "Vision Window Co",
   image: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
-  url: "https://visionwindowco.com",
+  url: "https://www.visionwindowco.com",
   telephone: "+919511637830",
   email: "contact@visionwindowco.com",
   foundingDate: "2013",
@@ -335,7 +335,7 @@ const localBusinessSchema = {
             itemOffered: {
               "@type": "Product",
               name: "UPVC Casement Windows",
-              url: "https://visionwindowco.com/products/casement-windows",
+              url: "https://www.visionwindowco.com/products/casement-windows",
               description: "Classic side-hinged windows that open outward, providing excellent ventilation and unobstructed views.",
             },
           },
@@ -344,7 +344,7 @@ const localBusinessSchema = {
             itemOffered: {
               "@type": "Product",
               name: "UPVC Sliding Windows",
-              url: "https://visionwindowco.com/products/sliding-windows",
+              url: "https://www.visionwindowco.com/products/sliding-windows",
               description: "Sleek horizontal sliding windows that save space while maximizing natural light.",
             },
           },
@@ -353,7 +353,7 @@ const localBusinessSchema = {
             itemOffered: {
               "@type": "Product",
               name: "UPVC Tilt & Turn Windows",
-              url: "https://visionwindowco.com/products/tilt-turn-windows",
+              url: "https://www.visionwindowco.com/products/tilt-turn-windows",
               description: "Versatile windows that tilt inward for ventilation or swing open fully for easy cleaning.",
             },
           },
@@ -362,7 +362,7 @@ const localBusinessSchema = {
             itemOffered: {
               "@type": "Product",
               name: "UPVC Fixed Windows",
-              url: "https://visionwindowco.com/products/fixed-windows",
+              url: "https://www.visionwindowco.com/products/fixed-windows",
               description: "Non-opening panoramic windows designed for maximum light and views.",
             },
           },
@@ -377,7 +377,7 @@ const localBusinessSchema = {
             itemOffered: {
               "@type": "Product",
               name: "UPVC French Doors",
-              url: "https://visionwindowco.com/products/french-doors",
+              url: "https://www.visionwindowco.com/products/french-doors",
               description: "Elegant double doors that add a touch of sophistication to any entrance.",
             },
           },
@@ -386,7 +386,7 @@ const localBusinessSchema = {
             itemOffered: {
               "@type": "Product",
               name: "UPVC Sliding Doors",
-              url: "https://visionwindowco.com/products/sliding-doors",
+              url: "https://www.visionwindowco.com/products/sliding-doors",
               description: "Premium sliding doors for balconies and patios with panoramic glass.",
             },
           },
@@ -412,7 +412,7 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://visionwindowco.com",
+      item: "https://www.visionwindowco.com",
     },
   ],
 };

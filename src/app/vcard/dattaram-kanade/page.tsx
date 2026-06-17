@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Dattaram Kanade — Founder & CEO | Vision Window Co',
     description: 'Connect with Dattaram Kanade, Founder & CEO of Vision Window Co. 20+ years experience in sales, project management, and premium UPVC fenestration.',
-    url: 'https://visionwindowco.com/vcard/dattaram-kanade',
+    url: 'https://www.visionwindowco.com/vcard/dattaram-kanade',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'profile',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg'],
   },
   alternates: {
-    canonical: 'https://visionwindowco.com/vcard/dattaram-kanade',
+    canonical: 'https://www.visionwindowco.com/vcard/dattaram-kanade',
   },
 };
 
@@ -44,20 +44,20 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": "https://visionwindowco.com/vcard/dattaram-kanade/#person",
+  "@id": "https://www.visionwindowco.com/vcard/dattaram-kanade/#person",
   name: "Dattaram Madhukar Kanade",
   givenName: "Dattaram",
   familyName: "Kanade",
   jobTitle: "Founder & CEO",
-  url: "https://visionwindowco.com/vcard/dattaram-kanade",
+  url: "https://www.visionwindowco.com/vcard/dattaram-kanade",
   image: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781721408/Transform_this_into_a_professional_202605271903_udolel_1_zrghdc.jpg",
   telephone: "+919511637830",
   email: "contact@visionwindowco.com",
   worksFor: {
     "@type": "Organization",
-    "@id": "https://visionwindowco.com/#organization",
+    "@id": "https://www.visionwindowco.com/#organization",
     name: "Vision Window Co",
-    url: "https://visionwindowco.com",
+    url: "https://www.visionwindowco.com",
   },
   address: {
     "@type": "PostalAddress",
@@ -84,7 +84,7 @@ const personSchema = {
   ],
   sameAs: [
     "https://wa.me/919511637830",
-    "https://visionwindowco.com",
+    "https://www.visionwindowco.com",
   ],
 };
 
@@ -96,13 +96,13 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://visionwindowco.com",
+      item: "https://www.visionwindowco.com",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Dattaram Kanade — VCard",
-      item: "https://visionwindowco.com/vcard/dattaram-kanade",
+      item: "https://www.visionwindowco.com/vcard/dattaram-kanade",
     },
   ],
 };

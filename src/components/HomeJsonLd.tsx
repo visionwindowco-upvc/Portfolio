@@ -75,13 +75,13 @@ const faqSchema = {
 const homePageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "@id": "https://visionwindowco.com/#webpage",
-  url: "https://visionwindowco.com",
+  "@id": "https://www.visionwindowco.com/#webpage",
+  url: "https://www.visionwindowco.com",
   name: "Vision Window Co | Premium UPVC Windows & Doors in Vasai-Virar, Maharashtra",
   description:
     "Premium UPVC windows and doors manufacturer in Vasai-Virar, Maharashtra. Casement, sliding, tilt & turn windows and French doors. 1200+ projects completed. Get a free quote!",
-  isPartOf: { "@id": "https://visionwindowco.com/#website" },
-  about: { "@id": "https://visionwindowco.com/#organization" },
+  isPartOf: { "@id": "https://www.visionwindowco.com/#website" },
+  about: { "@id": "https://www.visionwindowco.com/#organization" },
   primaryImageOfPage: {
     "@type": "ImageObject",
     url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/hero-bg_wjokad.jpg",

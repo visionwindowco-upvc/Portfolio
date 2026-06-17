@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Premium UPVC Windows & Doors Collection | Vision Window Co',
     description: 'Searching for high-quality, energy-efficient windows? Browse our complete UPVC range including Casement, Sliding, Tilt & Turn Windows, and French Doors at visionwindowco.com.',
-    url: 'https://visionwindowco.com/products',
+    url: 'https://www.visionwindowco.com/products',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720948/casement-window_lctpxt.jpg'],
   },
   alternates: {
-    canonical: 'https://visionwindowco.com/products',
+    canonical: 'https://www.visionwindowco.com/products',
   },
 };
 
@@ -52,14 +52,14 @@ const productListSchema = {
   "@type": "ItemList",
   name: "Vision Window Co UPVC Product Range",
   description: "Complete range of premium UPVC windows and doors by Vision Window Co",
-  url: "https://visionwindowco.com/products",
+  url: "https://www.visionwindowco.com/products",
   numberOfItems: products.length,
   itemListElement: products.map((product, index) => ({
     "@type": "ListItem",
     position: index + 1,
     name: product.name,
-    url: `https://visionwindowco.com/products/${product.id}`,
-    image: `https://visionwindowco.com${product.image}`,
+    url: `https://www.visionwindowco.com/products/${product.id}`,
+    image: `https://www.visionwindowco.com${product.image}`,
     description: product.description,
   })),
 };
@@ -72,13 +72,13 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://visionwindowco.com",
+      item: "https://www.visionwindowco.com",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Products",
-      item: "https://visionwindowco.com/products",
+      item: "https://www.visionwindowco.com/products",
     },
   ],
 };
@@ -86,12 +86,12 @@ const breadcrumbSchema = {
 const collectionPageSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "https://visionwindowco.com/products/#collectionpage",
-  url: "https://visionwindowco.com/products",
+  "@id": "https://www.visionwindowco.com/products/#collectionpage",
+  url: "https://www.visionwindowco.com/products",
   name: "Premium UPVC Windows & Doors Range",
   description: "Explore Vision Window Co's complete range of premium UPVC windows and doors.",
-  isPartOf: { "@id": "https://visionwindowco.com/#website" },
-  about: { "@id": "https://visionwindowco.com/#organization" },
+  isPartOf: { "@id": "https://www.visionwindowco.com/#website" },
+  about: { "@id": "https://www.visionwindowco.com/#organization" },
   inLanguage: "en-IN",
 };
 

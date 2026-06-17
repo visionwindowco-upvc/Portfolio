@@ -3,7 +3,7 @@ import { products } from '@/lib/data/products';
 import { blogPosts } from '@/lib/data/blogs';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://visionwindowco.com';
+  const baseUrl = 'https://www.visionwindowco.com';
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [

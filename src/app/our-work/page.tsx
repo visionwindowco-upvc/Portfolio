@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Our Work — 1200+ Completed Projects | Vision Window Co',
     description: 'Looking for inspiration for your new windows? Explore our portfolio of premium UPVC window and door installations across residential, commercial, and hospitality sectors in Maharashtra at www.visionwindowco.com.',
-    url: 'https://visionwindowco.com/our-work',
+    url: 'https://www.visionwindowco.com/our-work',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720963/commercial-building_vwf7gc.jpg'],
   },
   alternates: {
-    canonical: 'https://visionwindowco.com/our-work',
+    canonical: 'https://www.visionwindowco.com/our-work',
   },
 };
 
@@ -47,12 +47,12 @@ export const metadata: Metadata = {
 const collectionPageSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "https://visionwindowco.com/our-work/#collectionpage",
-  url: "https://visionwindowco.com/our-work",
+  "@id": "https://www.visionwindowco.com/our-work/#collectionpage",
+  url: "https://www.visionwindowco.com/our-work",
   name: "Our Work — Completed UPVC Window & Door Projects",
   description: "Portfolio of 1200+ completed UPVC window and door projects by Vision Window Co across residential, commercial, and hospitality sectors in Maharashtra.",
-  isPartOf: { "@id": "https://visionwindowco.com/#website" },
-  about: { "@id": "https://visionwindowco.com/#organization" },
+  isPartOf: { "@id": "https://www.visionwindowco.com/#website" },
+  about: { "@id": "https://www.visionwindowco.com/#organization" },
   inLanguage: "en-IN",
   mainEntity: {
     "@type": "ImageGallery",
@@ -121,13 +121,13 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://visionwindowco.com",
+      item: "https://www.visionwindowco.com",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Our Work",
-      item: "https://visionwindowco.com/our-work",
+      item: "https://www.visionwindowco.com/our-work",
     },
   ],
 };

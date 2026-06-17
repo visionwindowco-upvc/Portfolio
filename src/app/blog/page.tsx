@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Blog — Expert UPVC Insights | Vision Window Co',
     description: 'Not sure if UPVC is right for you? Read expert insights, tips, and guides on UPVC windows and doors. Learn about energy efficiency, maintenance, and buying guides at visionwindowco.com.',
-    url: 'https://visionwindowco.com/blog',
+    url: 'https://www.visionwindowco.com/blog',
     siteName: 'Vision Window Co',
     locale: 'en_IN',
     type: 'website',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/hero-bg_wjokad.jpg'],
   },
   alternates: {
-    canonical: 'https://visionwindowco.com/blog',
+    canonical: 'https://www.visionwindowco.com/blog',
   },
 };
 
@@ -48,27 +48,27 @@ export const metadata: Metadata = {
 const blogSchema = {
   "@context": "https://schema.org",
   "@type": "Blog",
-  "@id": "https://visionwindowco.com/blog/#blog",
-  url: "https://visionwindowco.com/blog",
+  "@id": "https://www.visionwindowco.com/blog/#blog",
+  url: "https://www.visionwindowco.com/blog",
   name: "Vision Window Co Blog — UPVC Expert Insights",
   description: "Expert insights, tips, and guides on UPVC windows and doors from Vision Window Co.",
   publisher: {
     "@type": "Organization",
     name: "Vision Window Co",
-    url: "https://visionwindowco.com",
+    url: "https://www.visionwindowco.com",
     logo: {
       "@type": "ImageObject",
       url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
     },
   },
-  isPartOf: { "@id": "https://visionwindowco.com/#website" },
+  isPartOf: { "@id": "https://www.visionwindowco.com/#website" },
   inLanguage: "en-IN",
   blogPost: blogPosts.map((post) => ({
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    url: `https://visionwindowco.com/blog/${post.slug}`,
-    image: `https://visionwindowco.com${post.image}`,
+    url: `https://www.visionwindowco.com/blog/${post.slug}`,
+    image: `https://www.visionwindowco.com${post.image}`,
     author: {
       "@type": "Organization",
       name: post.author,
@@ -89,13 +89,13 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://visionwindowco.com",
+      item: "https://www.visionwindowco.com",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Blog",
-      item: "https://visionwindowco.com/blog",
+      item: "https://www.visionwindowco.com/blog",
     },
   ],
 };

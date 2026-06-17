@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://visionwindowco.com/sitemap.xml',
-    host: 'https://visionwindowco.com',
+    sitemap: 'https://www.visionwindowco.com/sitemap.xml',
+    host: 'https://www.visionwindowco.com',
   };
 }

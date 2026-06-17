@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `${product.name} | Vision Window Co`,
       description: product.description,
-      url: `https://visionwindowco.com/products/${product.id}`,
+      url: `https://www.visionwindowco.com/products/${product.id}`,
       siteName: 'Vision Window Co',
       locale: 'en_IN',
       type: 'website',
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       images: [product.image],
     },
     alternates: {
-      canonical: `https://visionwindowco.com/products/${product.id}`,
+      canonical: `https://www.visionwindowco.com/products/${product.id}`,
     },
   };
 }
@@ -80,17 +80,17 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     "@type": "Product",
     name: product.name,
     description: product.longDescription,
-    image: `https://visionwindowco.com${product.image}`,
-    url: `https://visionwindowco.com/products/${product.id}`,
+    image: `https://www.visionwindowco.com${product.image}`,
+    url: `https://www.visionwindowco.com/products/${product.id}`,
     brand: {
       "@type": "Brand",
       name: "Vision Window Co",
-      url: "https://visionwindowco.com",
+      url: "https://www.visionwindowco.com",
     },
     manufacturer: {
       "@type": "Organization",
       name: "Vision Window Co",
-      url: "https://visionwindowco.com",
+      url: "https://www.visionwindowco.com",
     },
     category: `UPVC ${product.category}`,
     material: "UPVC (Unplasticized Polyvinyl Chloride)",
@@ -115,7 +115,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         "@type": "State",
         name: "Maharashtra",
       },
-      url: `https://visionwindowco.com/products/${product.id}`,
+      url: `https://www.visionwindowco.com/products/${product.id}`,
     },
     aggregateRating: {
       "@type": "AggregateRating",
@@ -134,19 +134,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://visionwindowco.com",
+        item: "https://www.visionwindowco.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Products",
-        item: "https://visionwindowco.com/products",
+        item: "https://www.visionwindowco.com/products",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: product.name,
-        item: `https://visionwindowco.com/products/${product.id}`,
+        item: `https://www.visionwindowco.com/products/${product.id}`,
       },
     ],
   };

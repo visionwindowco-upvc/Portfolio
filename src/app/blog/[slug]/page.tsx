@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `https://visionwindowco.com/blog/${post.slug}`,
+      url: `https://www.visionwindowco.com/blog/${post.slug}`,
       siteName: 'Vision Window Co',
       locale: 'en_IN',
       type: 'article',
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       images: [post.image],
     },
     alternates: {
-      canonical: `https://visionwindowco.com/blog/${post.slug}`,
+      canonical: `https://www.visionwindowco.com/blog/${post.slug}`,
     },
   };
 }
@@ -77,17 +77,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "@id": `https://visionwindowco.com/blog/${post.slug}/#blogposting`,
+    "@id": `https://www.visionwindowco.com/blog/${post.slug}/#blogposting`,
     headline: post.title,
     description: post.excerpt,
-    image: `https://visionwindowco.com${post.image}`,
-    url: `https://visionwindowco.com/blog/${post.slug}`,
+    image: `https://www.visionwindowco.com${post.image}`,
+    url: `https://www.visionwindowco.com/blog/${post.slug}`,
     datePublished: post.date,
     dateModified: post.date,
     author: {
       "@type": "Organization",
       name: post.author,
-      url: "https://visionwindowco.com",
+      url: "https://www.visionwindowco.com",
       logo: {
         "@type": "ImageObject",
         url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     publisher: {
       "@type": "Organization",
       name: "Vision Window Co",
-      url: "https://visionwindowco.com",
+      url: "https://www.visionwindowco.com",
       logo: {
         "@type": "ImageObject",
         url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
@@ -106,13 +106,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://visionwindowco.com/blog/${post.slug}`,
+      "@id": `https://www.visionwindowco.com/blog/${post.slug}`,
     },
     articleSection: post.category,
     wordCount: post.content.split(/\s+/).length,
     inLanguage: "en-IN",
     isPartOf: {
-      "@id": "https://visionwindowco.com/blog/#blog",
+      "@id": "https://www.visionwindowco.com/blog/#blog",
     },
     about: {
       "@type": "Thing",
@@ -128,19 +128,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://visionwindowco.com",
+        item: "https://www.visionwindowco.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://visionwindowco.com/blog",
+        item: "https://www.visionwindowco.com/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: post.title,
-        item: `https://visionwindowco.com/blog/${post.slug}`,
+        item: `https://www.visionwindowco.com/blog/${post.slug}`,
       },
     ],
   };
