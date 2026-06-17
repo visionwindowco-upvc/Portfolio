@@ -446,6 +446,19 @@ export default function RootLayout({
         <meta name="geo.position" content="19.4598;72.8847" />
         <meta name="ICBM" content="19.4598, 72.8847" />
         <meta name="format-detection" content="telephone=yes" />
+
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QXX9ZBYMM" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-9QXX9ZBYMM');
+            `
+          }}
+        />
       </head>
       <body>
         <Navbar />
