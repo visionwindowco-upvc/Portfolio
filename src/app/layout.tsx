@@ -76,21 +76,12 @@ export const metadata: Metadata = {
     title: "Vision Window Co | Best UPVC Windows & Doors in Vasai-Virar",
     description:
       "Are you looking to upgrade your home? Transform your space with premium UPVC windows and doors. Vision Window Co in Vasai-Virar, Maharashtra offers energy-efficient, weather-resistant, and elegant designs. Explore our 1200+ completed projects.",
-    images: [
-      {
-        url: "https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Vision Window Co Logo",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vision Window Co | Premium UPVC Windows & Doors",
     description:
       "Searching for high-quality UPVC windows and doors in Vasai-Virar? Vision Window Co provides elegant, noise-reducing, and weather-resistant solutions. Get a free quote!",
-    images: ["https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg"],
     creator: "@visionwindowco",
     site: "@visionwindowco",
   },
