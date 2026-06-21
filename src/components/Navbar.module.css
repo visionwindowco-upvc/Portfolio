@@ -1,20 +1,23 @@
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  margin: 0 auto;
+  width: auto;
+  max-width: 1200px;
   z-index: 100000;
-  padding: 16px 0;
+  padding: 12px 24px;
+  background: #ffffff;
+  border-radius: 99px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   transition: all var(--transition-base);
 }
 
 .navbar.scrolled {
-  padding: 8px 0;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 4px 30px rgba(31, 38, 135, 0.06);
+  top: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
 }
 
 .navContainer {
@@ -58,8 +61,8 @@
 
 .logoTag {
   font-size: 0.65rem;
-  color: var(--text-muted);
-  font-weight: 500;
+  color: var(--color-blue-deep);
+  font-weight: 600;
   letter-spacing: 0.04em;
 }
 
@@ -211,10 +214,10 @@
 
 @media (max-width: 480px) {
   .navbar {
-    padding: 8px 0;
+    padding: 8px 16px;
   }
   .navbar.scrolled {
-    padding: 6px 0;
+    padding: 8px 16px;
   }
   .navContainer {
     gap: var(--space-sm);

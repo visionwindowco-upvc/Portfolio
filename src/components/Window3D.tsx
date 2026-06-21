@@ -16,7 +16,7 @@ if (typeof window !== 'undefined') {
   });
 }
 
-function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => void, activeFeature?: number | null }) {
+function WindowFrame({ onIntroFinish, activeFeature, skipIntro, isMobile }: { onIntroFinish?: () => void, activeFeature?: number | null, skipIntro?: boolean, isMobile?: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const baseRotX = useRef(0);
   const baseRotY = useRef(0);
@@ -40,8 +40,8 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    const skipIntro = window.scrollY > 100;
-    if (skipIntro) {
+    const shouldSkipIntro = skipIntro || window.scrollY > 100;
+    if (shouldSkipIntro) {
       introTimer.current = introDuration;
       if (!hasFinishedIntro.current && onIntroFinish) {
         hasFinishedIntro.current = true;
@@ -66,7 +66,7 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
         child.userData.duration = dur;
         child.userData.origRot = child.rotation.clone();
 
-        if (skipIntro) {
+        if (shouldSkipIntro) {
           child.userData.explPos = child.position.clone();
           child.userData.explRot = child.rotation.clone();
         } else {
@@ -243,7 +243,7 @@ function WindowFrame({ onIntroFinish, activeFeature }: { onIntroFinish?: () => v
   const panelH = (frameHeight - frameThickness * 2 - mullionThickness) / 2;
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={isMobile ? 1.1 : 1}>
         {/* Outer Frame - Top */}
         <mesh position={[0, halfH - frameThickness/2, 0]} material={frameMaterial}>
           <boxGeometry args={[frameWidth, frameThickness, frameDepth]} />
@@ -554,12 +554,14 @@ function Window3DFallback() {
   );
 }
 
-export default function Window3D({ onIntroFinish, activeFeature = null }: { onIntroFinish?: () => void, activeFeature?: number | null }) {
+export default function Window3D({ onIntroFinish, activeFeature = null, skipIntro = false }: { onIntroFinish?: () => void, activeFeature?: number | null, skipIntro?: boolean }) {
   const [isWebGLAvailable, setIsWebGLAvailable] = useState(true);
   const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
+    setIsMobile(window.innerWidth <= 768);
     // Check WebGL availability
     try {
       const canvas = document.createElement('canvas');
@@ -581,7 +583,7 @@ export default function Window3D({ onIntroFinish, activeFeature = null }: { onIn
   }
 
   return (
-    <div style={{ width: '100%', height: '100%', minHeight: '400px' }}>
+    <div style={{ width: '100%', height: '100%' }}>
       <Canvas3DErrorBoundary fallback={<Window3DFallback />}>
         <Canvas
           camera={{ position: [0, 0, 7], fov: 40 }}
@@ -602,7 +604,7 @@ export default function Window3D({ onIntroFinish, activeFeature = null }: { onIn
             <directionalLight position={[5, 5, 5]} intensity={0.8} />
             <directionalLight position={[-3, 3, -5]} intensity={0.3} color="#b0d4ff" />
 
-            <WindowFrame onIntroFinish={onIntroFinish} activeFeature={activeFeature} />
+            <WindowFrame onIntroFinish={onIntroFinish} activeFeature={activeFeature} skipIntro={skipIntro} isMobile={isMobile} />
 
             <Environment preset="city" environmentIntensity={0.4} />
 

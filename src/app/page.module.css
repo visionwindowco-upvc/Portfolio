@@ -1,101 +1,78 @@
-/* ========== HERO SECTION ========== */
+/* ========== HERO SECTION (Desktop Cinematic) ========== */
 .hero {
   position: relative;
-  min-height: 100vh;
+  height: 250vh; /* Scroll room for cinematic effect */
+  background: linear-gradient(160deg, #f8fbff 0%, #eef5ff 25%, #dbeafe 55%, #e8f2ff 85%, #f0f7ff 100%);
+  padding-top: 0; /* Let sticky handle alignment */
+}
+
+.heroSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(160deg, #f8fbff 0%, #eef5ff 25%, #dbeafe 55%, #e8f2ff 85%, #f0f7ff 100%);
-  padding-top: 80px;
-}
-
-.heroBgElements {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.heroBlob1 {
-  width: 600px;
-  height: 600px;
-  top: -200px;
-  right: -200px;
-  opacity: 0.5;
-  animation: blob 18s ease-in-out infinite;
-}
-
-.heroBlob2 {
-  width: 500px;
-  height: 500px;
-  bottom: -150px;
-  left: -200px;
-  opacity: 0.4;
-  animation: blob 22s ease-in-out infinite reverse;
-}
-
-.heroBlob3 {
-  width: 300px;
-  height: 300px;
-  top: 30%;
-  left: 40%;
-  opacity: 0.25;
-  animation: blob 15s ease-in-out infinite;
-}
-
-.heroGrid {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-}
-
-.heroContainer {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-3xl);
-  align-items: center;
-  position: relative;
-  z-index: 1;
-  padding: var(--space-3xl) var(--space-lg);
 }
 
 .heroContent {
+  position: absolute;
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 0 var(--space-xl);
+  pointer-events: none; /* so clicks pass through to 3d */
+}
+
+.heroContent > * {
+  pointer-events: auto;
 }
 
 .heroTitle {
-  font-size: var(--text-5xl);
+  font-size: var(--text-6xl);
   font-weight: 800;
-  line-height: 1.08;
+  line-height: 1.05;
   letter-spacing: -0.02em;
+  color: white;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+}
+
+.heroTitle :global(.gradient-text) {
+  background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #bfdbfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .heroSubtitle {
   font-size: var(--text-lg);
-  color: var(--text-muted);
-  line-height: 1.7;
-  max-width: 500px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+  max-width: 600px;
+  margin-top: var(--space-md);
 }
 
 .heroCtas {
   display: flex;
   gap: var(--space-md);
-  flex-wrap: wrap;
+  margin-top: var(--space-xl);
+  justify-content: center;
 }
 
 .heroTrust {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding-top: var(--space-md);
+  margin-top: var(--space-xl);
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .trustStars {
@@ -111,34 +88,54 @@
 
 .heroTrust span {
   font-size: var(--text-sm);
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.7);
 }
 
-/* 3D Visual */
-.heroVisual {
-  position: relative;
+/* 3D Visual Frame */
+.heroVisualFrame {
+  position: absolute;
+  z-index: 5;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
 }
 
 .window3dContainer {
   width: 100%;
-  aspect-ratio: 1;
-  max-width: 560px;
+  height: 100%;
   position: relative;
   z-index: 1;
 }
 
-.heroVisualGlow {
+.heroVisualOverlay {
   position: absolute;
-  width: 80%;
-  height: 80%;
-  top: 10%;
-  left: 10%;
-  background: radial-gradient(ellipse, rgba(59, 130, 246, 0.12) 0%, transparent 60%);
-  filter: blur(40px);
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.75) 100%);
+  z-index: 2;
   pointer-events: none;
+}
+
+/* Overriding section label and buttons for desktop cinematic */
+.heroContent :global(.section-label) {
+  background: rgba(10, 22, 40, 0.6);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: var(--space-lg);
+}
+
+.heroContent :global(.btn-secondary) {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.heroContent :global(.btn-secondary:hover) {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .introFullscreen {
@@ -174,34 +171,90 @@
   animation: pulse-glow 1.5s ease-in-out infinite;
 }
 
-/* Scroll Indicator */
-.scrollIndicator {
+/* Unified Scroll Indicator */
+.unifiedScrollIndicator {
   position: absolute;
-  bottom: 30px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: 1;
+  pointer-events: none;
 }
 
-.scrollMouse {
-  width: 24px;
-  height: 38px;
-  border: 2px solid var(--color-sky);
-  border-radius: 12px;
+.scrollText {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgba(15, 23, 42, 0.7);
+  font-weight: 600;
+}
+
+.minimalScrollLineContainer {
+  width: 1px;
+  height: 40px;
+  background: rgba(15, 23, 42, 0.2);
+  overflow: hidden;
   position: relative;
-  opacity: 0.5;
 }
 
-.scrollDot {
+.minimalScrollLine {
+  width: 100%;
+  height: 50%;
+  background: rgba(15, 23, 42, 0.9);
   position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 8px;
-  background: var(--color-sky-bright);
-  border-radius: 4px;
-  animation: slide-up 1.5s ease-in-out infinite;
+  top: -50%;
+}
+
+/* ========== MOBILE HERO BACKGROUND (Cinematic) ========== */
+.mobileHeroBg {
+  display: none;
+}
+
+.mobileHeroBgImage {
+  position: absolute;
+  inset: 0;
+  animation: kenBurns 20s ease-in-out infinite alternate;
+}
+
+.mobileHeroBgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 22, 40, 0.15) 0%,
+    rgba(10, 22, 40, 0.05) 25%,
+    rgba(10, 22, 40, 0.2) 45%,
+    rgba(10, 22, 40, 0.65) 65%,
+    rgba(10, 22, 40, 0.92) 85%,
+    rgba(10, 22, 40, 0.98) 100%
+  );
+  z-index: 1;
+}
+
+.mobileHeroVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-shadow: inset 0 0 120px 40px rgba(10, 22, 40, 0.5);
+  pointer-events: none;
+}
+
+/* Mobile Scroll Chevron */
+.mobileScrollChevron {
+  display: none;
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-2%, -3%);
+  }
 }
 
 /* ========== FEATURES SECTION ========== */
@@ -252,8 +305,8 @@
 
 .pieCenter {
   position: relative;
-  width: 500px;
-  height: 500px;
+  width: 520px;
+  height: 520px;
   border-radius: 50%;
   border: 2px dashed rgba(59, 130, 246, 0.25);
   display: flex;
@@ -271,8 +324,8 @@
 }
 
 .pieWindowPlaceholder {
-  width: 380px;
-  height: 380px;
+  width: 450px;
+  height: 450px;
   border-radius: 50%;
   position: relative;
   z-index: 10;
@@ -664,7 +717,7 @@
     flex-wrap: wrap;
   }
   .window3dContainer {
-    max-width: 400px;
+    width: 350px;
     height: 0px;
     margin: 0;
   }
@@ -675,12 +728,12 @@
   }
   /* Pie Chart Features Section */
   .pieCenter {
-    width: 400px;
-    height: 400px;
+    width: 420px;
+    height: 420px;
   }
   .pieWindowPlaceholder {
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
   }
   .pieNode0 { left: -180px; }
   .pieNode1 { right: -180px; }
@@ -701,25 +754,83 @@
 }
 
 @media (max-width: 768px) {
-  .hero {
-    min-height: auto;
-    padding-top: 100px;
-    padding-bottom: var(--space-2xl);
+  .heroContent {
+    padding: 0 var(--space-md);
   }
-  .heroContainer {
-    padding: var(--space-xl) var(--space-md);
+  .heroContent :global(.section-label) {
+    margin-bottom: var(--space-sm);
   }
   .heroTitle {
     font-size: var(--text-4xl);
+    padding: 0 var(--space-sm);
+  }
+  .heroTitle :global(.gradient-text) {
+    background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #bfdbfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .heroSubtitle {
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
+    margin-top: var(--space-sm);
+  }
+  .heroCtas {
+    margin-top: var(--space-lg);
+    flex-direction: column;
+    width: 100%;
+    padding: 0 var(--space-xl);
+  }
+  .heroTrust {
+    margin-top: var(--space-lg);
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-xs);
+  }
+  .heroContainer :global(.section-label) {
+    background: rgba(10, 22, 40, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .heroCtas :global(.btn-secondary) {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+  .heroCtas :global(.btn-secondary:hover) {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
   }
   .heroVisual {
     display: none;
   }
   .window3dContainer {
     height: 0px;
+  }
+  /* Mobile Hero Image Card */
+  .mobileHeroImageCard {
+    display: block;
+    margin-top: var(--space-lg);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-xl);
+    padding: var(--space-sm);
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    position: relative;
+    z-index: 2;
+  }
+  .mobileHeroImageInfo h3 {
+    color: white;
+  }
+  .mobileHeroImageInfo p {
+    color: rgba(255, 255, 255, 0.65);
   }
   .pieStickyContainer {
     align-items: flex-start;
@@ -844,15 +955,32 @@
 @media (max-width: 480px) {
   .hero {
     padding-top: 70px;
-    padding-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
   }
   .heroContainer {
     padding: 0 var(--space-md);
   }
   .heroTitle {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
   }
   .heroTrust {
+    font-size: var(--text-xs);
+  }
+  .mobileHeroImageCard {
+    margin-top: var(--space-md);
+    padding: 6px;
+    border-radius: var(--radius-lg);
+  }
+  .mobileHeroImageWrap {
+    border-radius: var(--radius-md);
+  }
+  .mobileHeroImageInfo {
+    padding: var(--space-sm) var(--space-xs) 0;
+  }
+  .mobileHeroImageInfo h3 {
+    font-size: var(--text-base);
+  }
+  .mobileHeroImageInfo p {
     font-size: var(--text-xs);
   }
   .pieWindowPlaceholder {

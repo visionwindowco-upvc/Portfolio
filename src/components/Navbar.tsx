@@ -57,7 +57,7 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
       >
-        <div className={`container ${styles.navContainer}`}>
+        <div className={styles.navContainer}>
           <Link href="/" className={styles.logo} aria-label="Vision Window Co Home">
             <Image
               src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1200,c_limit/v1781720976/logo_ml0tyg.jpg"

@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, useInView, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView, useMotionValue, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { 
   HiOutlineShieldCheck, 
   HiOutlineSun, 
@@ -186,86 +186,58 @@ function AnimatedCounter({ value, label }: { value: string; label: string }) {
 
 export default function HomePage() {
   const [introMode, setIntroMode] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
-    // Skip intro if page loads already scrolled (e.g. F5 while scrolled down)
-    if (window.scrollY > 100) {
-      setIntroMode(false);
-    }
+    // Detect mobile
+    const mobile = window.innerWidth <= 1024;
+    setIsMobile(mobile);
   }, []);
   const gridRef = useRef<HTMLDivElement>(null);
   const featureGridRef = useRef<HTMLDivElement>(null);
   const featuresSectionRef = useRef<HTMLElement>(null);
   const [activeFeature, setActiveFeature] = useState<number | null>(null);
-  
-  // Motion values for smooth global positioning
-  const canvasX = useRef(0);
-  const canvasY = useRef(0);
-  const canvasW = useRef(0);
-  const canvasH = useRef(0);
-  const motionX = useMotionValue(0);
-  const motionY = useMotionValue(0);
-  const motionW = useMotionValue(0);
-  const motionH = useMotionValue(0);
 
   useEffect(() => {
     if (introMode) {
-      document.body.classList.add('hide-navbar');
-      return;
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.classList.remove('hide-navbar');
+      document.body.style.overflow = 'unset';
     }
-
-    // Set initial layout perfectly without lerping
-    if (gridRef.current) {
-      const rect = gridRef.current.getBoundingClientRect();
-      motionX.set(rect.left);
-      motionY.set(rect.top);
-      motionW.set(rect.width);
-      motionH.set(rect.height);
-    }
-
-    let animationFrameId: number;
-    const updatePosition = () => {
-      // Decide which placeholder to track
-      let targetRef = gridRef;
-      if (featuresSectionRef.current && featureGridRef.current && gridRef.current) {
-        const featuresRect = featuresSectionRef.current.getBoundingClientRect();
-        // If the features section is within the viewport, track it instead
-        if (featuresRect.top < window.innerHeight * 0.6 && featuresRect.bottom > 0) {
-          targetRef = featureGridRef;
-        }
-      }
-
-      if (targetRef.current) {
-        const rect = targetRef.current.getBoundingClientRect();
-        canvasX.current = rect.left;
-        canvasY.current = rect.top;
-        canvasW.current = rect.width;
-        canvasH.current = rect.height;
-      }
-
-      // Smooth lerp — faster factor to prevent visible size distortion during transitions
-      const lerpFactor = 0.25;
-      motionX.set(motionX.get() + (canvasX.current - motionX.get()) * lerpFactor);
-      motionY.set(motionY.get() + (canvasY.current - motionY.get()) * lerpFactor);
-      motionW.set(motionW.get() + (canvasW.current - motionW.get()) * lerpFactor);
-      motionH.set(motionH.get() + (canvasH.current - motionH.get()) * lerpFactor);
-
-      animationFrameId = requestAnimationFrame(updatePosition);
-    };
     
-    updatePosition();
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [introMode, motionX, motionY, motionW, motionH]);
+    // Skip intro if page loads already scrolled (e.g. F5 while scrolled down)
+    if (window.scrollY > 100) {
+      setIntroMode(false);
+    }
+  }, [introMode]);
 
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  
+  // Desktop & Mobile Frame Sizes
+  const frameWidthDesktop = useTransform(scrollYProgress, [0, 0.3], ['65vw', '100vw']);
+  const frameHeightDesktop = useTransform(scrollYProgress, [0, 0.3], ['70vh', '100vh']);
+  const frameWidthMobile = useTransform(scrollYProgress, [0, 0.3], ['92vw', '100vw']);
+  const frameHeightMobile = useTransform(scrollYProgress, [0, 0.3], ['85vh', '100vh']);
+  
+  const frameWidth = isMobile ? frameWidthMobile : frameWidthDesktop;
+  const frameHeight = isMobile ? frameHeightMobile : frameHeightDesktop;
+  const frameRadius = useTransform(scrollYProgress, [0, 0.3], ['40px', '0px']);
+  
+  // Text fades out and scales up early in the scroll
+  const textOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const textScale = useTransform(scrollYProgress, [0, 0.15], [1, 1.1]);
+  const textY = useTransform(scrollYProgress, [0, 0.15], [0, -40]);
+
+  // Scroll indicator state for complete unmounting
+  const [isScrolled, setIsScrolled] = useState(false);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > 0.005 && !isScrolled) setIsScrolled(true);
+    else if (latest <= 0.005 && isScrolled) setIsScrolled(false);
+  });
 
   // Track feature scroll for pie chart
   const { scrollYProgress: featureScrollY } = useScroll({
@@ -293,28 +265,17 @@ export default function HomePage() {
           <div className={styles.heroGrid} />
         </div>
 
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: introMode ? 1 : 0 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 9998,
-            background: 'linear-gradient(160deg, #f8fbff 0%, #eef5ff 25%, #dbeafe 55%, #e8f2ff 85%, #f0f7ff 100%)',
-            pointerEvents: introMode ? 'auto' : 'none'
-          }}
-        />
-
-        <motion.div 
-          className={`container ${styles.heroContainer}`}
-          style={{ y: heroY, opacity: heroOpacity }}
-        >
-          <div className={styles.heroContent}>
+        {/* Mobile Cinematic Hero Background (Unchanged) */}
+        {/* Desktop & Mobile Cinematic Content Container */}
+        <div className={styles.heroSticky}>
+          <motion.div 
+            className={`container ${styles.heroContent}`}
+            style={{ y: textY, opacity: textOpacity, scale: textScale }}
+          >
             <motion.span
               className="section-label"
-              initial={false}
-              animate={introMode ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               ✨ Premium UPVC Solutions
@@ -322,8 +283,8 @@ export default function HomePage() {
 
             <motion.h1
               className={styles.heroTitle}
-              initial={false}
-              animate={introMode ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
             >
               Elevate Your Spaces with{' '}
@@ -333,8 +294,8 @@ export default function HomePage() {
 
             <motion.p
               className={styles.heroSubtitle}
-              initial={false}
-              animate={introMode ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
               Experience the perfect blend of elegance, energy efficiency, and durability. 
@@ -343,10 +304,9 @@ export default function HomePage() {
 
             <motion.div
               className={styles.heroCtas}
-              initial={false}
-              animate={introMode ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              style={{ pointerEvents: introMode ? 'none' : 'auto' }}
             >
               <Link href="/#contact" className="btn btn-primary btn-lg">
                 Get a Free Quote <HiOutlineArrowRight />
@@ -358,8 +318,8 @@ export default function HomePage() {
 
             <motion.div
               className={styles.heroTrust}
-              initial={false}
-              animate={introMode ? { opacity: 0 } : { opacity: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 1 }}
             >
               <div className={styles.trustStars}>
@@ -369,56 +329,51 @@ export default function HomePage() {
               </div>
               <span>Trusted by 1200+ homeowners across Maharashtra</span>
             </motion.div>
-          </div>
+          </motion.div>
 
+          {/* Expanding Cinematic Frame (Desktop & Mobile) */}
           <motion.div
-            className={styles.heroVisual}
+            className={styles.heroVisualFrame}
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              width: frameWidth,
+              height: frameHeight,
+              borderRadius: frameRadius,
+            }}
           >
-            {/* Invisible placeholder to reserve the grid space */}
-            <div 
-              ref={gridRef}
-              className={styles.window3dContainer} 
-              style={{ visibility: 'hidden' }}
+            <Image
+              src="https://res.cloudinary.com/dflulie2g/image/upload/q_auto,w_1600,c_limit/v1781720963/luxury-villa_blzsse.jpg"
+              alt="Luxury Villa"
+              fill
+              sizes="100vw"
+              style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+              priority
             />
-            <div className={styles.heroVisualGlow} />
+            <div className={styles.heroVisualOverlay} />
           </motion.div>
-        </motion.div>
-
-        {/* Animated Canvas Layer (Now using global fixed positioning) */}
-        <motion.div
-          className={!introMode ? styles.hideOnMobile : ''}
-          initial={false}
-          style={{
-            position: 'fixed',
-            zIndex: 9999,
-            top: introMode ? 0 : motionY,
-            left: introMode ? 0 : motionX,
-            width: introMode ? '100vw' : motionW,
-            height: introMode ? '100vh' : motionH,
-            pointerEvents: introMode ? 'auto' : 'none',
-          }}
-          animate={introMode ? {} : {
-            transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
-          }}
-        >
-          <div style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
-            <Window3D onIntroFinish={() => setIntroMode(false)} activeFeature={activeFeature} />
-          </div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className={styles.scrollIndicator}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className={styles.scrollMouse}>
-            <div className={styles.scrollDot} />
-          </div>
-        </motion.div>
+          {/* Unified Minimalist Scroll Indicator (Moved inside sticky container) */}
+          <AnimatePresence>
+            {!isScrolled && (
+              <motion.div
+                className={styles.unifiedScrollIndicator}
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <span className={styles.scrollText}>SCROLL</span>
+                <div className={styles.minimalScrollLineContainer}>
+                  <motion.div 
+                    className={styles.minimalScrollLine}
+                    animate={{ y: [0, 60] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </section>
 
       {/* ========== FEATURES SECTION (PIE CHART) ========== */}
@@ -428,13 +383,14 @@ export default function HomePage() {
           <div className={styles.featureBlob2} />
           
           <div className={styles.pieCenter}>
-            {/* The 3D Window glides here via global tracking! */}
             <div 
               ref={featureGridRef} 
               className={styles.pieWindowPlaceholder}
-              style={{ visibility: 'hidden' }}
             >
               <div className={styles.featureVisualGlow} style={{ visibility: 'visible' }} />
+              <div style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}>
+                <Window3D activeFeature={activeFeature} skipIntro={true} />
+              </div>
             </div>
 
             {/* Circular Feature Nodes */}
@@ -600,6 +556,41 @@ export default function HomePage() {
 
       {/* ========== CONTACT SECTION ========== */}
       <ContactSection />
+      
+      {/* ========== FULLSCREEN 3D INTRO OVERLAY ========== */}
+      <AnimatePresence>
+        {introMode && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.0, ease: "easeInOut" }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 999999,
+              background: 'rgba(255, 255, 255, 0.4)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div style={{ width: '100%', height: '100%', maxWidth: '1000px', maxHeight: '1000px' }}>
+              <Window3D onIntroFinish={() => setIntroMode(false)} skipIntro={false} />
+            </div>
+            <motion.div 
+              style={{ position: 'absolute', bottom: '15%', textAlign: 'center' }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <h2 className="gradient-text" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontWeight: 700 }}>Vision Window Co</h2>
+              <p style={{ color: 'var(--text-dark)', letterSpacing: '0.2em', fontSize: '0.8rem', textTransform: 'uppercase', opacity: 0.7 }}>Crafting Excellence</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
