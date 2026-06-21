@@ -308,9 +308,16 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
-              <Link href="/#contact" className="btn btn-primary btn-lg">
+              <a 
+                href="#contact" 
+                className="btn btn-primary btn-lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Get a Free Quote <HiOutlineArrowRight />
-              </Link>
+              </a>
               <Link href="/products" className="btn btn-secondary btn-lg">
                 Explore Products
               </Link>

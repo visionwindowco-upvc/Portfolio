@@ -26,11 +26,6 @@
   text-align: center;
   width: 100%;
   padding: 0 var(--space-xl);
-  pointer-events: none; /* so clicks pass through to 3d */
-}
-
-.heroContent > * {
-  pointer-events: auto;
 }
 
 .heroTitle {
@@ -101,6 +96,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  pointer-events: none;
 }
 
 .window3dContainer {
