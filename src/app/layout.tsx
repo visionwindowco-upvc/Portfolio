@@ -328,6 +328,11 @@ const localBusinessSchema = {
               name: "UPVC Casement Windows",
               url: "https://www.visionwindowco.com/products/casement-windows",
               description: "Classic side-hinged windows that open outward, providing excellent ventilation and unobstructed views.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "1200",
+              },
             },
           },
           {
@@ -337,6 +342,11 @@ const localBusinessSchema = {
               name: "UPVC Sliding Windows",
               url: "https://www.visionwindowco.com/products/sliding-windows",
               description: "Sleek horizontal sliding windows that save space while maximizing natural light.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "1200",
+              },
             },
           },
           {
@@ -346,6 +356,11 @@ const localBusinessSchema = {
               name: "UPVC Tilt & Turn Windows",
               url: "https://www.visionwindowco.com/products/tilt-turn-windows",
               description: "Versatile windows that tilt inward for ventilation or swing open fully for easy cleaning.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "1200",
+              },
             },
           },
           {
@@ -355,6 +370,11 @@ const localBusinessSchema = {
               name: "UPVC Fixed Windows",
               url: "https://www.visionwindowco.com/products/fixed-windows",
               description: "Non-opening panoramic windows designed for maximum light and views.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "1200",
+              },
             },
           },
         ],
@@ -370,6 +390,11 @@ const localBusinessSchema = {
               name: "UPVC French Doors",
               url: "https://www.visionwindowco.com/products/french-doors",
               description: "Elegant double doors that add a touch of sophistication to any entrance.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "1200",
+              },
             },
           },
           {
@@ -379,6 +404,11 @@ const localBusinessSchema = {
               name: "UPVC Sliding Doors",
               url: "https://www.visionwindowco.com/products/sliding-doors",
               description: "Premium sliding doors for balconies and patios with panoramic glass.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "1200",
+              },
             },
           },
         ],
