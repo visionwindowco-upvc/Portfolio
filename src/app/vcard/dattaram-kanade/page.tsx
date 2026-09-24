@@ -61,10 +61,10 @@ const personSchema = {
   },
   address: {
     "@type": "PostalAddress",
-    streetAddress: "H No.89, Tokare Village, Mumbai - Ahmedabad Road, Virar Phata",
+    streetAddress: "Vision Window Co, Tokare Village, Ahmedabad - Mumbai Hwy, behind Indian Petrol Pump, Bhawkhal, Mumbai",
     addressLocality: "Vasai-Virar",
     addressRegion: "Maharashtra",
-    postalCode: "401208",
+    postalCode: "401305",
     addressCountry: "IN",
   },
   knowsAbout: [

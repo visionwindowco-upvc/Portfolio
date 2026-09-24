@@ -19,7 +19,7 @@ const contactInfo = {
   phone: '+91 95116 37830',
   email: 'contact@visionwindowco.com',
   website: 'https://www.visionwindowco.com',
-  address: 'H No.89, Tokare Village, Mumbai - Ahmedabad Road, Virar Phata, Vasai-Virar, Maharashtra 401208',
+  address: 'Vision Window Co, Tokare Village, Ahmedabad - Mumbai Hwy, behind Indian Petrol Pump, Bhawkhal, Mumbai, Vasai-Virar, Maharashtra 401305',
   whatsapp: 'https://wa.me/919511637830',
   social: {
     linkedin: '#',

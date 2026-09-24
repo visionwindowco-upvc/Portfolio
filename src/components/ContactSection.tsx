@@ -202,7 +202,7 @@ export default function ContactSection() {
                     <strong>Visit Us</strong>
                     <p>
                       <a href="https://maps.app.goo.gl/nuCFLsa595HoZBz58" target="_blank" rel="noopener noreferrer">
-                        H No.89, Tokare Village, Mumbai - Ahmedabad Road, Virar Phata, Vasai-Virar, Maharashtra 401208
+                        Vision Window Co, Tokare Village, Ahmedabad - Mumbai Hwy, behind Indian Petrol Pump, Bhawkhal, Mumbai, Vasai-Virar, Maharashtra 401305
                       </a>
                     </p>
                   </div>

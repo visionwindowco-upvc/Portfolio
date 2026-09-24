@@ -145,10 +145,10 @@ const organizationSchema = {
   },
   address: {
     "@type": "PostalAddress",
-    streetAddress: "H No.89, Tokare Village, Mumbai - Ahmedabad Road, Virar Phata",
+    streetAddress: "Vision Window Co, Tokare Village, Ahmedabad - Mumbai Hwy, behind Indian Petrol Pump, Bhawkhal, Mumbai",
     addressLocality: "Vasai-Virar",
     addressRegion: "Maharashtra",
-    postalCode: "401208",
+    postalCode: "401305",
     addressCountry: "IN",
   },
   contactPoint: {
@@ -213,10 +213,10 @@ const localBusinessSchema = {
     "Vision Window Co offers premium UPVC windows and doors in Vasai-Virar, Maharashtra. We specialize in casement windows, sliding windows, tilt & turn windows, fixed windows, French doors, and sliding doors. Energy-efficient, weather-resistant, and beautifully designed. Over 1200 projects completed.",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "H No.89, Tokare Village, Mumbai - Ahmedabad Road, Virar Phata",
+    streetAddress: "Vision Window Co, Tokare Village, Ahmedabad - Mumbai Hwy, behind Indian Petrol Pump, Bhawkhal, Mumbai",
     addressLocality: "Vasai-Virar",
     addressRegion: "Maharashtra",
-    postalCode: "401208",
+    postalCode: "401305",
     addressCountry: "IN",
   },
   geo: {

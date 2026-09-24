@@ -142,13 +142,13 @@ const testimonials = [
   {
     name: 'Balkrishna Kanekar',
     role: 'Founder of KCE Automations',
-    text: 'We are highly satisfied with expected quality and timely delivered and very technical abt their work',
+    text: 'Vision Window Co provided outstanding UPVC solutions for our facility. The sound insulation and modern aesthetic completely transformed our workspace.',
     rating: 5,
   },
   {
     name: 'Nitin Gandhi',
     role: 'Founder of Forever Consultants',
-    text: 'We are highly satisfied with expected quality and timely delivered and very technical abt their work',
+    text: 'The team at Vision Window Co was incredibly professional. Their attention to detail during installation and the premium quality of the UPVC windows exceeded our expectations.',
     rating: 5,
   },
   {

@@ -66,7 +66,7 @@ const faqSchema = {
       name: "Where is Vision Window Co located?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Vision Window Co is located at H No.89, Tokare Village, Mumbai - Ahmedabad Road, Virar Phata, Vasai-Virar, Maharashtra 401208, India. We serve the entire Mumbai Metropolitan Region including Mumbai, Thane, Navi Mumbai, Palghar, and surrounding areas. Visit us at www.visionwindowco.com or visionwindowco.com, or call +91 95116 37830.",
+        text: "Vision Window Co is located at Vision Window Co, Tokare Village, Ahmedabad - Mumbai Hwy, behind Indian Petrol Pump, Bhawkhal, Mumbai, Vasai-Virar, Maharashtra 401305, India. We serve the entire Mumbai Metropolitan Region including Mumbai, Thane, Navi Mumbai, Palghar, and surrounding areas. Visit us at www.visionwindowco.com or visionwindowco.com, or call +91 95116 37830.",
       },
     },
   ],
