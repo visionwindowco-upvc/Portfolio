@@ -140,21 +140,21 @@ const stats = [
 
 const testimonials = [
   {
-    name: 'Rajesh Sharma',
-    role: 'Homeowner, Mumbai',
-    text: 'Vision Window Co transformed our apartment with their UPVC windows. The noise reduction is incredible — we can finally sleep peacefully! Premium quality at a fair price.',
+    name: 'Balkrishna Kanekar',
+    role: 'Founder of KCE Automations',
+    text: 'We are highly satisfied with expected quality and timely delivered and very technical abt their work',
     rating: 5,
   },
   {
-    name: 'Priya Mehta',
-    role: 'Interior Designer',
-    text: 'I recommend Vision Window Co to all my clients. Their attention to detail, modern designs, and professional installation set them apart from the competition.',
+    name: 'Nitin Gandhi',
+    role: 'Founder of Forever Consultants',
+    text: 'We are highly satisfied with expected quality and timely delivered and very technical abt their work',
     rating: 5,
   },
   {
-    name: 'Sunil Patil',
-    role: 'Builder, Vasai-Virar',
-    text: 'We\'ve used Vision Window Co for multiple residential projects. Their products are top-tier, delivery is always on time, and the after-sales service is excellent.',
+    name: 'Vyankatesh Chandrakonda',
+    role: 'Savi Technologies, Borivali East, Mumbai',
+    text: 'We are highly satisfied with expected quality and timely delivered and very technical abt their work',
     rating: 5,
   },
 ];
